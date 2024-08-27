@@ -1,0 +1,21 @@
+Application Structure:
+
+USER
+    name
+    picture
+    location
+    instruments
+    rating
+
+INSTRUMENT
+    make
+    model
+    year
+    condition
+    price
+
+Users can search for available instruments in their area.
+Search filters can include make, model, price, etc...
+Once a user requests to rent an instrument, the owner can approve the rental.
+If the owner approves, payment is processed and the instrument is exchanged.
+owners can rate renters and vice verca.
