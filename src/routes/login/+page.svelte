@@ -1,7 +1,3 @@
-<script lang="ts">
-
-</script>
-
 <div class="flex justify-center items-center min-h-screen">
 	<div class="w-full max-w-sm text-center">
 

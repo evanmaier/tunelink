@@ -1,2 +1,15 @@
-<h1>Welcome to SvelteKit</h1>
-<p>Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation</p>
+<script lang="ts">
+    import { user } from '$lib/firebase'
+    import { goto } from '$app/navigation';
+    import { onMount } from 'svelte';
+    
+    onMount(() => {
+    if (!$user) {
+      goto('/login');
+    }
+  });
+</script>
+
+{#if $user}
+    <h1>Welcome {$user.email}</h1>
+{/if}

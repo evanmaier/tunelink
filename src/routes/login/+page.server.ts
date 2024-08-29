@@ -14,7 +14,7 @@ export const actions: Actions = {
         } catch (error) {
             console.error(error);
         }
-        throw redirect(303, '/dashboard');
+        throw redirect(303, '/');
 	},
 
     signUp: async ({request}) => {
@@ -27,6 +27,6 @@ export const actions: Actions = {
         } catch (error) {
             console.error(error);
         }
-        throw redirect(303, '/dashboard');
+        throw redirect(303, '/');
     }
 };
