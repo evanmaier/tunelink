@@ -1,32 +1,36 @@
-import type { Actions } from "@sveltejs/kit";
-import { redirect } from "@sveltejs/kit";
+import { fail, redirect, type Actions } from "@sveltejs/kit";
 import { auth } from "$lib/firebase";
-import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { z } from 'zod';
+import { zod } from 'sveltekit-superforms/adapters';
+import { message, superValidate } from 'sveltekit-superforms';
+
+const loginSchema = z.object({
+    email: z.string().trim().email({message: "must be valid email"}).min(1),
+    password: z.string().trim().min(8, {message: "must be at least 8 characters long"})
+});
+
+const defaults = { email: 'example@mail.com', password: 'password' }
+
+export const load = async() => {
+    const form = await superValidate(zod(loginSchema, { defaults }));
+    return { form };
+}
 
 export const actions: Actions = {
-	signIn: async ({request}) => {
-	    const formData = await request.formData();
-        const email = formData.get('email') as string;
-        const password = formData.get('password') as string;
-        try {
-            const userCredential = await signInWithEmailAndPassword(auth, email, password);
-            console.log(userCredential);
-        } catch (error) {
-            console.error(error);
-        }
-        throw redirect(303, '/');
-	},
+	default: async ({request}) => {
+	    const form = await superValidate(request, zod(loginSchema, { defaults }));
 
-    signUp: async ({request}) => {
-        const formData = await request.formData();
-        const email = formData.get('email') as string;
-        const password = formData.get('password') as string;
-        try {
-            const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-            console.log(userCredential);
-        } catch (error) {
-            console.error(error);
+        if (!form.valid) {
+            return fail(400, { form });
         }
-        throw redirect(303, '/');
-    }
+
+        try {
+            await signInWithEmailAndPassword(auth, form.data.email, form.data.password);
+        } catch (error) {
+			return message(form, 'invalid credentials', { status: 400 });
+        }
+        console.log("success");
+        redirect(303, '/');
+	}
 };
