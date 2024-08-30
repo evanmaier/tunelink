@@ -1,14 +1,40 @@
 <script lang="ts">
-    import { enhance } from '$app/forms';
+	import { superForm } from 'sveltekit-superforms';
+    export let data;
+    const { form, errors, constraints, message, enhance} = superForm(data.form);
 </script>
 
 <div class="flex justify-center items-center min-h-screen">
 	<div class="w-full max-w-sm text-center">
-        <h2 class="text-2xl font-bold mb-6">Register</h2>
-        <form method="POST" use:enhance class="flex flex-col gap-4 p-4">
-            <input name="email" type="email" placeholder="Email" required class="input input-bordered w-full max-w-s">
-            <input name="password" type="password" placeholder="Password" required class="input input-bordered w-full max-w-s">
-            <button class="btn">Register</button>
+        <form method="POST" use:enhance class="flex flex-col">
+            {#if $message}<span>{$message}</span>{/if}
+            <div class='label'>
+                <span class="label-text">Email</span>
+            </div>
+            <input 
+                type="email"
+                name="email"
+                aria-invalid={$errors.email ? 'true' : undefined}  
+                bind:value={$form.email}  
+                {...$constraints.email}
+                class="input input-bordered w-full max-w-s"           
+            />
+            {#if $errors.email}<span>{$errors.email}</span>{/if}
+            <div class='label'>
+                <span class="label-text">Password</span>
+            </div>
+            <input 
+                name="password" 
+                type="password"
+                aria-invalid={$errors.password ? 'true' : undefined}  
+                bind:value={$form.password}
+                {...$constraints.password}  
+                class="input input-bordered w-full max-w-s"
+            />
+            {#if $errors.password}<span>{$errors.password}</span>{/if}
+            
+            <button type="submit" class="btn mt-4 mb-4">Register</button>
+
         </form>
     </div>
 </div>
