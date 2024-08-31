@@ -1,10 +1,7 @@
-import { fail, isRedirect, redirect, type Actions } from "@sveltejs/kit";
-import { auth } from "$lib/firebase";
-import { signInWithEmailAndPassword } from 'firebase/auth';
+import { fail, type Actions } from "@sveltejs/kit";
 import { zod } from 'sveltekit-superforms/adapters';
-import { message, superValidate } from 'sveltekit-superforms';
+import { superValidate, message } from 'sveltekit-superforms';
 import { userSchema } from "$lib/components/UserSchema";
-
 
 const defaults = { email: 'example@mail.com', password: 'password' }
 
@@ -21,12 +18,6 @@ export const actions: Actions = {
             return fail(400, { form });
         }
 
-        try {
-            await signInWithEmailAndPassword(auth, form.data.email, form.data.password);
-        } catch (error) {
-			return message(form, 'invalid credentials', { status: 400 });
-        }
-        console.log("success");
-        redirect(303, '/');
+        return { form };
 	}
 };

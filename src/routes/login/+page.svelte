@@ -1,7 +1,27 @@
 <script lang="ts">
 	import { superForm } from 'sveltekit-superforms';
+    import { signInWithEmailAndPassword } from 'firebase/auth';
+    import { auth } from "$lib/firebase";
+	import { goto } from '$app/navigation';
+
+    async function handleSignIn() {
+        try {
+            await signInWithEmailAndPassword(auth, $form.email, $form.password);
+            goto('/');
+        } catch (error) {
+            $message = ('invalid credentials');
+        }
+    }
+
     export let data;
-    const { form, errors, constraints, message, enhance} = superForm(data.form);
+    const { form, errors, constraints, message, enhance} = superForm(data.form, {
+        onUpdated({form}) {
+            if (form.valid) {
+                handleSignIn();
+            }
+        }
+    });
+
 </script>
 
 <div class="flex justify-center items-center min-h-screen">
