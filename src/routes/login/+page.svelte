@@ -4,20 +4,23 @@
     import { auth } from "$lib/firebase";
 	import { goto } from '$app/navigation';
 
-    async function handleSignIn() {
-        try {
-            await signInWithEmailAndPassword(auth, $form.email, $form.password);
+    async function handleSignIn(email: string, password: string) {
+        signInWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+            console.log(userCredential.user);
             goto('/');
-        } catch (error) {
-            $message = ('invalid credentials');
-        }
+        })
+        .catch((error) => {
+            $message  = (error.message);
+        });
     }
 
     export let data;
     const { form, errors, constraints, message, enhance} = superForm(data.form, {
         onUpdated({form}) {
             if (form.valid) {
-                handleSignIn();
+                console.log("signing in user");
+                handleSignIn(form.data.email, form.data.password);
             }
         }
     });

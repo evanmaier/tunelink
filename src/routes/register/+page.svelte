@@ -1,7 +1,30 @@
 <script lang="ts">
+	import { createUserWithEmailAndPassword } from 'firebase/auth';
 	import { superForm } from 'sveltekit-superforms';
+    import { auth } from '$lib/firebase'
+    import { goto } from '$app/navigation';
+        
+    async function handleSignUp(email: string, password: string) {
+        createUserWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+            console.log(userCredential.user);
+            goto('/');
+        })
+        .catch((error) => {
+            $message  = (error.message);
+        });
+    }
+
     export let data;
-    const { form, errors, constraints, message, enhance} = superForm(data.form);
+    const { form, errors, constraints, message, enhance} = superForm(data.form, {
+        onUpdated({form}) {
+            if (form.valid) {
+                console.log("register user");
+                handleSignUp(form.data.email, form.data.password);
+            }
+        }
+    });
+
 </script>
 
 <div class="flex justify-center items-center min-h-screen">
