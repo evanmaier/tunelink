@@ -1,10 +1,9 @@
 <script lang="ts">
 	import { invalidateAll } from "$app/navigation";
 	import { auth } from "$lib/firebase";
-	import { userStore } from "$lib/stores";
+	import { user } from "$lib/stores/user";
     import { signOut } from "firebase/auth";
-
-    const currentUser = userStore(auth)
+    import AuthCheck from "$lib/components/AuthCheck.svelte";
 
     async function logOut() {
         signOut(auth)
@@ -17,11 +16,8 @@
     }
 </script>
 
-{#if $currentUser}
-    <h1>welcome {$currentUser?.email}</h1>
+<AuthCheck>
+    <h1>welcome {$user?.email}</h1>
     <button on:click={logOut} class="btn-primary">Sign Out</button>
-{:else}
-    <a href="/login" role="button" class="btn">Sign In</a>
-{/if}
-
+</AuthCheck>
 

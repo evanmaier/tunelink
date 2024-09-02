@@ -1,5 +1,6 @@
 import { onAuthStateChanged, type Auth } from "firebase/auth";
 import { writable } from "svelte/store";
+import { auth } from "$lib/firebase";
 
 export function userStore(auth: Auth) {
     
@@ -15,3 +16,5 @@ export function userStore(auth: Auth) {
     return { subscribe };
 
 }
+
+export const user = userStore(auth);
