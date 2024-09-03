@@ -18,6 +18,7 @@
 
 <AuthCheck>
     <h1>welcome {$user?.email}</h1>
+    <a href="/profile" role="button" class="btn">Edit Profile</a>
     <button on:click={logOut} class="btn-primary">Sign Out</button>
 </AuthCheck>
 
