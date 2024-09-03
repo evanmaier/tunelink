@@ -6,8 +6,7 @@
 
     async function handleSignIn(email: string, password: string) {
         signInWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
-            console.log(userCredential.user);
+        .then(() => {
             goto('/');
         })
         .catch((error) => {

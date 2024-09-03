@@ -6,5 +6,4 @@
     <slot/>
 {:else}
     <p>you must be signed in to access this content</p>
-    <a href="/login" class="btn-primary">Sign In</a>
 {/if}

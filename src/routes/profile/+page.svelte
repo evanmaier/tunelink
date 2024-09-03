@@ -53,10 +53,13 @@
     <div class="flex justify-center items-center min-h-screen">
         <div class="w-full max-w-sm text-center">
             <form class="flex flex-col" on:submit|preventDefault={ confirmUsername }>     
+                <div class="label">
+                    <span class="label-text">Set Username</span>
+                  </div>
                 <input 
                 type="text"
                 placeholder="Username"
-                class="input w-full"
+                class="input input-bordered w-full"
                 bind:value={username}
                 on:input={checkAvailability}
                 class:input-warning={isTaken}
