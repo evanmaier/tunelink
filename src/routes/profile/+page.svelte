@@ -1,6 +1,7 @@
 <script lang="ts">
     import AuthCheck from "$lib/components/AuthCheck.svelte";
 	import { db } from "$lib/firebase";
+	import { userData } from "$lib/stores/doc";
     import { user } from "$lib/stores/user";
     import { doc, getDoc, writeBatch } from "firebase/firestore";
 
@@ -50,6 +51,10 @@
 
 
 <AuthCheck>
+    {#if $userData?.username}
+    <p>your username is @{$userData.username}</p>
+    <p>usernames cannot be changed</p>
+    {:else}
     <div class="flex justify-center items-center min-h-screen">
         <div class="w-full max-w-sm text-center">
             <form class="flex flex-col" on:submit|preventDefault={ confirmUsername }>     
@@ -89,4 +94,6 @@
             </form>
         </div>
     </div>
+    {/if}
+    
 </AuthCheck>
