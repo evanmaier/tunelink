@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { user } from "$lib/stores/user";
+    import { user } from "$lib/stores/AuthStore";
     import { invalidateAll } from "$app/navigation";
 	import { auth } from "$lib/firebase";
     import { signOut } from "firebase/auth";

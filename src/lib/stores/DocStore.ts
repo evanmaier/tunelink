@@ -1,7 +1,7 @@
 import { doc, onSnapshot } from "firebase/firestore";
 import { db } from "$lib/firebase";
 import { writable, derived, type Readable } from "svelte/store";
-import { user } from "./user";
+import { user } from "./AuthStore";
 
 /**
  * @param  {string} path document path or reference
@@ -31,9 +31,7 @@ export function docStore<T>(
 
   interface UserData {
     username: string;
-    bio: string;
-    photoURL: string;
-    links: any[];
+    email: string;
   }
   
   export const userData: Readable<UserData | null> = derived(user, ($user, set) => { 
