@@ -7,37 +7,59 @@
     import { doc, getDoc, setDoc, writeBatch } from "firebase/firestore";
 
     async function isAvailable(username: string) {
-        console.log("checking username", username);
-        const ref = doc(db, "usernames", username);
-        const exists = await getDoc(ref).then((doc) => doc.exists());
-        return !exists;
+        try {
+            console.log("checking username", username);
+            const ref = doc(db, "usernames", username);
+            const exists = await getDoc(ref).then((doc) => doc.exists());
+            return !exists;
+        } catch (error) {
+            console.log("error checking username availability", error);
+        }
     }
 
     async function createUsername(user: User, username: string) {
-        console.log("creating username", username);
-        const usernamesDocRef = doc(db, 'usernames', username);
-        await setDoc(usernamesDocRef, {
-         uid: user.uid,   
-        });
+        try {
+            console.log("creating username", username);
+            const usernamesDocRef = doc(db, 'usernames', username);
+            await setDoc(usernamesDocRef, {
+                uid: user.uid,   
+            });
+        } catch (error) {
+            console.log("error creating username", error);
+        }
+        
     }
 
     async function createUser(user: User, username: string) {
-        console.log("creating user", user.uid);
-        const userDocRef = doc(db, 'users', user.uid);
-        await setDoc(userDocRef, {
-            email: user.email,
-            username: username,
-        });
+        try {
+            console.log("creating user", user.uid);
+            const userDocRef = doc(db, 'users', user.uid);
+            await setDoc(userDocRef, {
+                email: user.email,
+                username: username,
+            });
+        } catch (error) {
+            console.log("error creating user", error);
+        }
+        
     }
         
     async function handleSignUp(email: string, password: string, username: string) {
         createUserWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
             createUser(userCredential.user, username);
+            return userCredential;
+        })
+        .then((userCredential) => {
             createUsername(userCredential.user, username);
+            return username;
+        })
+        .then(() => {
+            console.log("register success");
             goto('/');
         })
         .catch((error) => {
+            console.log("error:", error);
             $message  = (error.message);
         });
     }
