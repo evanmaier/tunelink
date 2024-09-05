@@ -1,13 +1,40 @@
 <script lang="ts">
-	import { createUserWithEmailAndPassword } from 'firebase/auth';
-	import { superForm } from 'sveltekit-superforms';
+	import { createUserWithEmailAndPassword, type User } from 'firebase/auth';
+	import { superForm, setError } from 'sveltekit-superforms';
     import { auth } from '$lib/firebase'
     import { goto } from '$app/navigation';
+	import { db } from "$lib/firebase";
+    import { doc, getDoc, setDoc, writeBatch } from "firebase/firestore";
+
+    async function isAvailable(username: string) {
+        console.log("checking username", username);
+        const ref = doc(db, "usernames", username);
+        const exists = await getDoc(ref).then((doc) => doc.exists());
+        return !exists;
+    }
+
+    async function createUsername(user: User, username: string) {
+        console.log("creating username", username);
+        const usernamesDocRef = doc(db, 'usernames', username);
+        await setDoc(usernamesDocRef, {
+         uid: user.uid,   
+        });
+    }
+
+    async function createUser(user: User, username: string) {
+        console.log("creating user", user.uid);
+        const userDocRef = doc(db, 'users', user.uid);
+        await setDoc(userDocRef, {
+            email: user.email,
+            username: username,
+        });
+    }
         
-    async function handleSignUp(email: string, password: string) {
+    async function handleSignUp(email: string, password: string, username: string) {
         createUserWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
-            console.log(userCredential.user);
+            createUser(userCredential.user, username);
+            createUsername(userCredential.user, username);
             goto('/');
         })
         .catch((error) => {
@@ -17,10 +44,20 @@
 
     export let data;
     const { form, errors, constraints, message, enhance} = superForm(data.form, {
+        async onUpdate({ form }) {
+            if (form.valid) {
+                const available = await isAvailable(form.data.username);
+                if (!available) {
+                    setError(form, 'username', 'username is not available');
+                    form.valid = false;
+                }
+            }
+        },
+
         onUpdated({form}) {
             if (form.valid) {
-                console.log("register user");
-                handleSignUp(form.data.email, form.data.password);
+                console.log("register user", form.data.email);
+                handleSignUp(form.data.email, form.data.password, form.data.username);
             }
         }
     });
@@ -42,7 +79,10 @@
                 {...$constraints.email}
                 class="input input-bordered w-full max-w-s"           
             />
-            {#if $errors.email}<span>{$errors.email}</span>{/if}
+            {#if $errors.email}
+            <span>{$errors.email}</span>
+            {/if}
+
             <div class='label'>
                 <span class="label-text">Password</span>
             </div>
@@ -54,10 +94,28 @@
                 {...$constraints.password}  
                 class="input input-bordered w-full max-w-s"
             />
-            {#if $errors.password}<span>{$errors.password}</span>{/if}
+            {#if $errors.password}
+            <span>{$errors.password}</span>
+            {/if}
             
-            <button type="submit" class="btn mt-4 mb-4">Register</button>
-
+            <div class="label">
+                <span class="label-text">Username</span>
+            </div>
+            <input 
+            name="username"
+            type="text"
+            aria-invalid={$errors.username ? 'true' : undefined}
+            bind:value={$form.username}
+            {...$constraints.username}
+            class="input input-bordered w-full max-w-s"            
+            />
+            {#if $errors.username}
+            <span>{$errors.username}</span>
+            {/if}        
+                
+            <button type="submit" class="btn btn-success mt-4 mb-4">Register </button>
+                
+            
         </form>
     </div>
 </div>
