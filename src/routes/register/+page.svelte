@@ -4,7 +4,7 @@
     import { auth } from '$lib/firebase'
     import { goto } from '$app/navigation';
 	import { db } from "$lib/firebase";
-    import { doc, getDoc, setDoc, writeBatch } from "firebase/firestore";
+    import { doc, getDoc, setDoc } from "firebase/firestore";
 
     async function isAvailable(username: string) {
         try {
