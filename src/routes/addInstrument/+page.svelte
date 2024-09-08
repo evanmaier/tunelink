@@ -1,22 +1,11 @@
 <script lang='ts'>
     import { db, storage } from "$lib/firebase";
-    import { doc, collection, setDoc, GeoPoint } from "firebase/firestore";
+    import { doc, collection, setDoc } from "firebase/firestore";
     import { user } from "$lib/stores/AuthStore";
     import AuthCheck from "$lib/components/AuthCheck.svelte";
     import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
-    import { onMount } from "svelte";
 
-    // onMount ensures this runs in the browser 
-    onMount(() => {
-        if ("geolocation" in navigator) {
-            navigator.geolocation.getCurrentPosition( (position) => { 
-                lat = position.coords.latitude;
-                long = position.coords.longitude; 
-            });
-        } else {
-            console.log('no geolocation available');
-        }
-    });
+    export let form;
 
     const instrumentRef = doc(collection(db, 'instruments'));
 
@@ -24,104 +13,121 @@
     let category: string;
     let condition: string;
     let description: string;
-    let lat: number;
-    let long: number;
+    let address: string;
+    $: location = form?.location;
     let make: string;
     let model: string;
     let path: string;
-    let pictures: string[];
-    let pricePerDay: number;
-
-    
+    let pictures: Array<string> = [];
+    let pricePerDay: number; 
 
     async function upload(e: any) {
-        const files = e.target.files;
-        const storageRef = ref(storage, `instruments/${instrumentRef.id}`);
-        
-        files.array.forEach( async (image: any) => {
-            const result = await uploadBytes(storageRef, image);
-            const url = await getDownloadURL(result.ref);
-            pictures.push(url);
-        });
+      const files: Array<File> = [...e.target.files];
+      const storageRef = ref(storage, `instruments/${instrumentRef.id}`);
+      
+      files.forEach( async (image: any) => {
+          const result = await uploadBytes(storageRef, image);
+          const url = await getDownloadURL(result.ref);
+          pictures.push(url);
+      });
         
     }
 
-    async function handleSubmit() { 
-        if ($user) {
-            path = `users/${$user.uid}`;
-        }
+    async function handleSubmit() {
+      if ($user) {
+          path = `users/${$user.uid}`;
+      }
 
-        await setDoc(instrumentRef, {
-            available: available,
-            category: category,
-            condition: condition,
-            createdAt: Date.now(),
-            description: description,
-            location: new GeoPoint(lat, long),
-            make: make,
-            model: model,
-            owner: doc(db, path),
-            pictures: pictures,
-            pricePerDay: pricePerDay,
-            reviews: {}
-        });
+      await setDoc(instrumentRef, {
+        available: available,
+        category: category,
+        condition: condition,
+        createdAt: Date.now(),
+        description: description,
+        location: location,
+        make: make,
+        model: model,
+        owner: doc(db, path),
+        pictures: pictures,
+        pricePerDay: pricePerDay,
+        reviews: {}
+      });
     }
 
 </script>
 
 <AuthCheck>
-    <div class="flex justify-center items-center min-h-screen">
-        <div class="w-full max-w-sm text-center">
-    <form on:submit|preventDefault={handleSubmit} class="flex flex-col">
-        <div class="form-control">
+  <div class="h-screen flex flex-col items-center justify-center">
+    <h2 class='mb-4'>Add an instrument</h2>
+    <form on:submit|preventDefault={handleSubmit}>
+        <div class="form-control mb-4">
             <label class="label cursor-pointer">
-              <span class="label-text">Available</span>
+              <span class='label-text'>Available</span>
               <input type="checkbox" bind:value={available} class="toggle" checked />
             </label>
-          </div>
-    
-        <select bind:value={category} class="select select-bordered w-full max-w-xs">
+        </div>
+
+        <div class='mb-4'>
+          <select bind:value={category} class="select select-bordered w-full max-w-xs">
             <option disabled selected>Category</option>
             <option>Guitar</option>
             <option>Bass</option>
             <option>Other</option>
           </select>
-    
-        <select bind:value={condition} class="select select-bordered w-full max-w-xs">
+        </div>
+        
+        <div class='mb-4'>
+          <select bind:value={condition} class="select select-bordered w-full max-w-xs">
             <option disabled selected>Condition</option>
             <option>Excellent</option>
             <option>Good</option>
             <option>Poor</option>
           </select>
+        </div>
+
+        <div class='label'>
+          <span class="label-text">Description</span>
+      </div>
+      <textarea bind:value={description} class="textarea textarea-bordered w-full max-w-xs" />
+
+      <div class='label'>
+        <span class="label-text">Address</span>
+    </div>
+        <input type="text" name="address" bind:value={address} class='input input-bordered w-full max-w-xs'>
+        <button formaction="?/locate" formmethod="post" class='btn'>Validate</button>
+        {#if form?.error} <p class="error">{form.error}</p> {/if}
+     
     
         <div class='label'>
             <span class="label-text">Make</span>
-          </div>
-          <input type="text" bind:value={make} class="input input-bordered w-full max-w-xs" />
+        </div>
+        <input type="text" bind:value={make} class="input input-bordered w-full max-w-xs" />
         
         <div class='label'>
             <span class="label-text">Model</span>
-          </div>
-          <input type="text" bind:value={model} class="input input-bordered w-full max-w-xs" />
+        </div>
+        <input type="text" bind:value={model} class="input input-bordered w-full max-w-xs" />
 
         <div class='label'>
             <span class="label-text">Choose images</span>
-          </div>
-          <input
-            on:change={upload}
-            type="file"
-            class="file-input file-input-bordered w-full max-w-xs"
-            accept="image/png, image/jpeg, image/gif, image/webp"
-          />
+        </div>
+        <input
+          on:change={upload}
+          type="file"
+          multiple
+          class="file-input file-input-bordered w-full max-w-xs"
+          accept="image/png, image/jpeg, image/gif, image/webp"
+        />
     
         <div class='label'>
-            <span class="label-text">Price per day</span>
-          </div>
-          <input type="text" bind:value={pricePerDay} class="input input-bordered w-full max-w-xs" />
+          <span class="label-text">Price per day</span>
+        </div>
+        <input type="text" bind:value={pricePerDay} class="input input-bordered w-full max-w-xs" />
 
-        <button type='submit' class='btn btn-primary w-full'>Submit</button>
+        <div class='py-4'>
+          <button type='submit' class='btn btn-primary w-full'>Submit</button>
+        </div>
 
     </form>
-</div>
 </div>
 </AuthCheck>
