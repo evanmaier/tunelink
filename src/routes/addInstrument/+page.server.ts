@@ -1,29 +1,36 @@
 import { GEOCODING_API_KEY } from '$env/static/private';
 import { fail, type Actions } from '@sveltejs/kit';
-import  NodeGeocoder  from 'node-geocoder';
-import { GeoPoint } from 'firebase/firestore';
+import nodeGeocoder from 'node-geocoder';
 
-const geocoder = NodeGeocoder({
+const options: nodeGeocoder.Options = {
     provider: 'opencage',
     apiKey: GEOCODING_API_KEY
-  });
+}
+
+const geocoder = nodeGeocoder(options);
 
 export const actions: Actions = {
     locate: async ({request}) => {
         const data = await request.formData();
-        const address = data.get('address');
-        try {
-            const result = await geocoder.geocode(address);
-            const location = new GeoPoint(result.latitude, result.longitude);
-            console.log(location);
-            return { location };
-
-        } catch (error: any) {
-            return fail(422, {
-                error: error.message
-            })
-            
+        const address = data.get('address')?.toString();
+        if (address) {
+            try {
+                const data = await geocoder.geocode(address);
+                console.log()
+                            
+                return {
+                    lat: data[0].latitude,
+                    long: data[0].longitude
+                }
+    
+            } catch (error: any) {
+                return fail(422, {
+                    error: error.message
+                })
+                
+            }
         }
+        
     }
 };
 

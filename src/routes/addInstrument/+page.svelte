@@ -1,6 +1,6 @@
 <script lang='ts'>
     import { db, storage } from "$lib/firebase";
-    import { doc, collection, setDoc } from "firebase/firestore";
+    import { doc, collection, setDoc, GeoPoint } from "firebase/firestore";
     import { user } from "$lib/stores/AuthStore";
     import AuthCheck from "$lib/components/AuthCheck.svelte";
     import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
@@ -14,7 +14,8 @@
     let condition: string;
     let description: string;
     let address: string;
-    $: location = form?.location;
+    $: lat = form?.lat;
+    $: long = form?.long;
     let make: string;
     let model: string;
     let path: string;
@@ -37,6 +38,10 @@
       if ($user) {
           path = `users/${$user.uid}`;
       }
+      
+      if  (lat == undefined || long == undefined) {
+        lat = long = 0;
+      }
 
       await setDoc(instrumentRef, {
         available: available,
@@ -44,7 +49,7 @@
         condition: condition,
         createdAt: Date.now(),
         description: description,
-        location: location,
+        location: new GeoPoint(lat, long),
         make: make,
         model: model,
         owner: doc(db, path),
