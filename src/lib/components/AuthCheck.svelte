@@ -1,9 +1,9 @@
 <script lang="ts">
-    import { user } from "$lib/stores/AuthStore"
+	import { user } from '$lib/stores/AuthStore';
 </script>
 
 {#if $user}
-    <slot/>
+	<slot />
 {:else}
-    <p>you must be signed in to access this content</p>
+	<p>you must be signed in to access this content</p>
 {/if}

@@ -1,36 +1,37 @@
 <script lang="ts">
-    import { user } from "$lib/stores/AuthStore";
-    import { invalidateAll } from "$app/navigation";
-	import { auth } from "$lib/firebase";
-    import { signOut } from "firebase/auth";
+	import { user } from '$lib/stores/AuthStore';
+	import { invalidateAll } from '$app/navigation';
+	import { auth } from '$lib/firebase';
+	import { signOut } from 'firebase/auth';
 
-    async function logOut() {
-        signOut(auth)
-        .then(() => {
-            invalidateAll();
-        })
-        .catch((error) => {
-            console.log(error.message);
-        });
-    }
-
+	async function logOut() {
+		signOut(auth)
+			.then(() => {
+				invalidateAll();
+			})
+			.catch((error) => {
+				console.log(error.message);
+			});
+	}
 </script>
 
 <nav class="bg-base-100 shadow-md">
-    <ul class="menu menu-horizontal space-x-4">
-        {#if $user}
-            <li>
-                <a href="/" class="btn btn-ghost">Home</a>
-            </li>
-            <li>
-                <a href="/profile" class="btn btn-ghost">Profile</a>
-            </li>
-            <li>
-                <button on:click={logOut} class="btn btn-primary text-white">Sign Out</button>
-            </li>
-        {:else}
-            <a href="/login" class="btn btn-primary text-white">Sign In</a>
-        {/if}
-        
-    </ul>
+	<ul class="menu menu-horizontal space-x-4">
+		{#if $user}
+			<li>
+				<a href="/" class="btn btn-ghost">Home</a>
+			</li>
+			<li>
+				<a href="/profile" class="btn btn-ghost">Profile</a>
+			</li>
+			<li>
+				<a href="/addInstrument" class="btn btn-ghost">Add Instrument</a>
+			</li>
+			<li>
+				<button on:click={logOut} class="btn btn-primary text-white">Sign Out</button>
+			</li>
+		{:else}
+			<a href="/login" class="btn btn-primary text-white">Sign In</a>
+		{/if}
+	</ul>
 </nav>
