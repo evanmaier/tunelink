@@ -1,7 +1,23 @@
 <script lang="ts">
 	import AuthCheck from '$lib/components/AuthCheck.svelte';
 	import { userData } from '$lib/stores/DocStore';
+	import { onMount } from 'svelte';
+
+	$: location = { lat: 0, lon: 0 };
+
+	onMount( async() => {
+		try{
+			const res = await fetch('/api/location');
+			const data = await res.json();
+			location = { lat: data.lat, lon: data.lon };
+		} catch (error: any) {
+			console.log(error.message);
+		}
+	});
+
 </script>
+
+<h1>your latitude is {location?.lat} and your longitude is {location?.lon}</h1>
 
 <AuthCheck>
 	<div class="flex flex-col items-center justify-center p-4 min-h-screen">
