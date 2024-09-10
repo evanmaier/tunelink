@@ -23,6 +23,7 @@
 	let path: string;
 	let pictures: Array<string> = [];
 	let pricePerDay: number;
+	let address: string;
 
   let form: any;
 
@@ -50,7 +51,7 @@
 			condition: condition,
 			createdAt: Date.now(),
 			description: description,
-			location: new GeoPoint(0, 0), //TODO: use user location or allow user to set location
+			location: new GeoPoint(0, 0), //TODO: user set location by address
 			make: make,
 			model: model,
 			owner: doc(db, path),
@@ -136,6 +137,11 @@
 				accept="image/png, image/jpeg, image/gif, image/webp"
         required
 			/>
+
+			<div class="label">
+				<span class="label-text">Address</span>
+			</div>
+			<input type="text" bind:value={address} placeholder="TODO!" class="input input-bordered w-full max-w-xs"/>
 
 			<div class="py-4">
 				<button type="submit" class="btn btn-primary w-full">Submit</button>
