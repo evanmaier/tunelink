@@ -1,11 +1,12 @@
 <script lang="ts">
 	import AuthCheck from '$lib/components/AuthCheck.svelte';
-	import { userData } from '$lib/stores/DocStore';
 	import { latitude, longitude } from '$lib/stores/GeoStore';
 	import { onMount } from 'svelte';
+	import YourGear from '$lib/components/YourGear.svelte';
+	import Todo from '$lib/components/Todo.svelte';
 
-	onMount( async() => {
-		try{
+	onMount(async () => {
+		try {
 			const res = await fetch('/api/location');
 			const data = await res.json();
 			$latitude = data.lat;
@@ -14,22 +15,19 @@
 			console.log(error.message);
 		}
 	});
-
 </script>
 
-<h1>your latitude is {$latitude} and your longitude is {$longitude}</h1>
-
 <AuthCheck>
-	<div class="flex flex-col items-center justify-center p-4 min-h-screen">
-		<h1 class="text-2xl font-bold mb-10">Welcome {$userData?.username}</h1>
-		<h2 class="text-2xl font-bold text-center">TODO</h2>
-		<ul class="list-disc list-inside text-lg">
-			<li class="mb-2 line-through">Add instrument</li>
-			<li class="mb-2">Your instruments</li>
-			<li class="mb-2">Messages / notifications / rental requests</li>
-			<li class="mb-2">Recommended rentals near you</li>
-			<li class="mb-2">Search bar</li>
-		</ul>	
+	<div class="flex h-full">
+		<!-- Left side -->
+		<div class="w-1/2 relative">
+			<div class="absolute right-0 top-0 h-full"></div>
+			<YourGear />
+		</div>
+
+		<!-- Right side -->
+		<div class="w-1/2">
+			<Todo />
+		</div>
 	</div>
-	
 </AuthCheck>
