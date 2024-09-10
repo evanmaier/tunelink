@@ -77,7 +77,7 @@
 			<div class="form-control mb-4">
 				<label class="label cursor-pointer">
 					<span class="label-text">Available</span>
-					<input type="checkbox" bind:value={available} class="toggle" checked required/>
+					<input type="checkbox"  class="toggle" bind:checked={available} required/>
 				</label>
 			</div>
 
