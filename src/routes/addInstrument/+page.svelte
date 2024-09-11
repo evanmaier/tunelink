@@ -6,11 +6,13 @@
 		setDoc,
 		GeoPoint,
 		Timestamp,
-		DocumentReference
+		DocumentReference,
+		updateDoc
 	} from 'firebase/firestore';
 	import { user } from '$lib/stores/AuthStore';
 	import AuthCheck from '$lib/components/AuthCheck.svelte';
 	import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
+	import { userData } from '$lib/stores/DocStore';
 
 	type Review = {
 		comment: string;
@@ -34,6 +36,10 @@
 	let form: any;
 
 	const instrumentRef = doc(collection(db, 'instruments'));
+	let userRef: DocumentReference;
+	if ($user) {
+		userRef = doc(db, 'users', $user.uid);
+	}
 
 	async function upload(e: any) {
 		const files: Array<File> = [...e.target.files];
@@ -46,7 +52,7 @@
 		});
 	}
 
-	async function handleSubmit(event: any) {
+	async function handleSubmit() {
 		if ($user) {
 			path = `users/${$user.uid}`;
 		}
@@ -69,9 +75,21 @@
 
 		console.log(data);
 
-		await setDoc(instrumentRef, data).catch((error) => {
-			console.log(error.message);
-		});
+		let instruments = $userData?.instruments;
+		if (!instruments) {
+			instruments = [];
+		}
+
+		await setDoc(instrumentRef, data)
+			.then(async () => {
+				instruments.push(instrumentRef);
+				await updateDoc(userRef, {
+					instruments: instruments
+				});
+			})
+			.catch((error) => {
+				console.log(error.message);
+			});
 
 		form.reset();
 	}
