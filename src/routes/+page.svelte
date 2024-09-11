@@ -2,7 +2,6 @@
 	import AuthCheck from '$lib/components/AuthCheck.svelte';
 	import { latitude, longitude } from '$lib/stores/GeoStore';
 	import { onMount } from 'svelte';
-	import YourGear from '$lib/components/YourGear.svelte';
 	import Todo from '$lib/components/Todo.svelte';
 
 	onMount(async () => {
@@ -19,15 +18,13 @@
 
 <AuthCheck>
 	<div class="flex h-full">
-		<!-- Left side -->
-		<div class="w-1/2 relative">
-			<div class="absolute right-0 top-0 h-full"></div>
-			<YourGear />
-		</div>
-
-		<!-- Right side -->
-		<div class="w-1/2">
-			<Todo />
-		</div>
+		<Todo />
 	</div>
+
+	<a
+		href="/yourInstruments"
+		class="block p-4 max-w-sm mx-auto rounded-lg shadow-lg hover:shadow-xl"
+	>
+		<h3 class="text-xl font-semibold mb-2">Your Instruments</h3>
+	</a>
 </AuthCheck>

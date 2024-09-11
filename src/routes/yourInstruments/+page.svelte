@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { userData } from '$lib/stores/DocStore';
 	import { type DocumentData, getDoc } from 'firebase/firestore';
-	import AuthCheck from './AuthCheck.svelte';
+	import AuthCheck from '$lib/components/AuthCheck.svelte';
 
 	let instruments: Array<DocumentData | undefined> = [];
 	$: if ($userData?.instruments) {
@@ -22,17 +22,25 @@
 	}
 </script>
 
+<h2 class="font-bold text-lg underline">Todo</h2>
+<ul>
+	<li>Editing</li>
+	<li>Stats</li>
+	<li>Removal</li>
+</ul>
+
 <AuthCheck>
-	<div class="flex flex-col p-4 items-center justify-center">
-		<h2 class="text-2xl font-bold">your instruments:</h2>
+	<h2 class="text-2xl font-bold text-center">Your Instruments</h2>
+	<div class="flex p-4 justify-center">
 		{#if $userData}
 			{#each instruments as i}
 				{#if i}
-					<h3>{i.year} {i.make} {i.model}</h3>
-					{#each i.pictures as picURL}
-						<img src={picURL} alt="instrument" class="max-w-full max-h-[400px] object-cover" />
-					{/each}
-					<p>{i.description}</p>
+					<div class="flex flex-col w-96 p-4">
+						<h3 class="text-bold text-xl text-center p-4">{i.year} {i.make} {i.model}</h3>
+						{#each i.pictures as picURL}
+							<img src={picURL} alt="instrument" class="max-w-full max-h-[400px] object-cover" />
+						{/each}
+					</div>
 				{:else}
 					<p>no instruments yet, consider adding one</p>
 				{/if}
