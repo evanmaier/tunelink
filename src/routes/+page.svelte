@@ -16,15 +16,6 @@
 	});
 </script>
 
-<h2 class="text-lg font-bold underline">TODO</h2>
-<ul class="list-disc list-inside">
-	<li class="mb-2">Delete users and instruments from DB</li>
-	<li class="mb-2">Set location using address when uploading a new instrument</li>
-	<li class="mb-2">Recommended rentals near you</li>
-	<li class="mb-2">Search bar</li>
-	<li class="mb-2">Messages / notifications / rental requests</li>
-</ul>
-
 <AuthCheck>
 	<h1 class="text-2xl font-bold mb-10 text-center">Welcome {$userData?.username}</h1>
 
