@@ -1,6 +1,6 @@
-import { type RequestEvent, type RequestHandler } from '@sveltejs/kit';
+import { type RequestEvent } from '@sveltejs/kit';
 
-export const GET: RequestHandler = async (event: RequestEvent) => {
+export async function GET(event: RequestEvent) {
 	let query = event.getClientAddress();
 	if (query == '127.0.0.1') {
 		query = '216.71.204.252';
@@ -12,4 +12,4 @@ export const GET: RequestHandler = async (event: RequestEvent) => {
 	} catch (error: any) {
 		return new Response(JSON.stringify({ message: error.message }), { status: 400 });
 	}
-};
+}

@@ -13,6 +13,7 @@
 	import AuthCheck from '$lib/components/AuthCheck.svelte';
 	import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 	import { userData } from '$lib/stores/DocStore';
+	import { longitude, latitude } from '$lib/stores/GeoStore.js';
 
 	type Review = {
 		comment: string;
@@ -63,7 +64,7 @@
 			condition: condition,
 			createdAt: Date.now(),
 			description: description,
-			location: new GeoPoint(0, 0), //TODO: user set location by address
+			location: new GeoPoint(lat, long),
 			make: make,
 			model: model,
 			year: year,
@@ -92,6 +93,34 @@
 			});
 
 		form.reset();
+	}
+
+	const location = `${$longitude},${$latitude}`;
+	let preview = '';
+	let lat = 0;
+	let long = 0;
+
+	async function geocode() {
+		if (address && address.length > 4) {
+			const response = await fetch('/api/mapbox', {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({ address, location })
+			});
+			const data = await response.json();
+			const loc = data.features[0];
+			try {
+				preview = loc.place_name;
+				[long, lat] = loc.center;
+			} catch {
+				preview = 'keep typing';
+			}
+		}
+	}
+
+	function confirmAddress() {
+		address = preview;
+		preview = '';
 	}
 </script>
 
@@ -179,12 +208,17 @@
 			<div class="label">
 				<span class="label-text">Address</span>
 			</div>
-			<input
-				type="text"
-				bind:value={address}
-				placeholder="TODO!"
-				class="input input-bordered w-full max-w-xs"
-			/>
+			<div class="flex">
+				<input
+					on:input={geocode}
+					type="text"
+					bind:value={address}
+					class="input input-bordered w-full max-w-xs"
+				/>
+				<button class="btn btn-success" on:click|preventDefault={confirmAddress}>Confirm</button>
+			</div>
+
+			<p class="text-sm max-w-xs">{preview}</p>
 
 			<div class="py-4">
 				<button type="submit" class="btn btn-primary w-full">Submit</button>
