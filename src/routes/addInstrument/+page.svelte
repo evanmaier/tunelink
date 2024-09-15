@@ -4,7 +4,6 @@
 		doc,
 		collection,
 		setDoc,
-		GeoPoint,
 		Timestamp,
 		DocumentReference,
 		updateDoc
@@ -33,6 +32,9 @@
 	let pictures: Array<string> = [];
 	let pricePerDay: number;
 	let address: string;
+	let preview = '';
+	let lat = 0;
+	let lon = 0;
 
 	let form: any;
 
@@ -64,7 +66,7 @@
 			condition: condition,
 			createdAt: Date.now(),
 			description: description,
-			location: new GeoPoint(lat, long),
+			location: {lat, lon},
 			make: make,
 			model: model,
 			year: year,
@@ -95,23 +97,18 @@
 		form.reset();
 	}
 
-	const location = `${$longitude},${$latitude}`;
-	let preview = '';
-	let lat = 0;
-	let long = 0;
-
 	async function geocode() {
 		if (address && address.length > 4) {
+			const location = `${$longitude},${$latitude}`;
 			const response = await fetch('/api/mapbox', {
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json' },
 				body: JSON.stringify({ address, location })
 			});
 			const data = await response.json();
-			const loc = data.features[0];
 			try {
-				preview = loc.place_name;
-				[long, lat] = loc.center;
+				preview = data.features[0].place_name;
+				[lon, lat] = data.features[0].center;
 			} catch {
 				preview = 'keep typing';
 			}
