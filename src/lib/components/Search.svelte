@@ -17,7 +17,7 @@
         try {
 			const searchResponse = await index.search(query, { 
                 hitsPerPage: 3,
-                attributesToRetrieve: ['model', 'make', 'year'],  
+                attributesToRetrieve: ['model', 'make', 'year', 'pictures'],  
             });
             hits = searchResponse.hits;
 		} catch (error) {
@@ -26,9 +26,24 @@
 	}
 </script>
 
-<div class='flex flex-col m-4'>
-	<input type="text" name="search" placeholder="Search" class="input input-bordered w-full max-w-xs" bind:value={query} on:keyup={search} />
+<div class='mb-4 w-4/12'>
+    <input type="text" name="search" placeholder="Search" class="input input-bordered w-full" bind:value={query} on:keyup={search} />
+</div>
+
+<div class="grid grid-cols-1 gap-2 max-w-xs">
     {#each hits as hit }
-        <p>{hit.make} {hit.model} {hit.year}</p>
+    <div class="rounded-lg p-2 shadow-md">
+        <div class='flex items-center'>
+            <img 
+                src="{hit.pictures[0]}" 
+                alt="pic" 
+                class="h-20 w-20 object-cover rounded-md mr-4" 
+            />
+            <div>
+                <p class='text-lg font-semibold'>{hit.make} {hit.model}</p>
+                <p class='text-md'>{hit.year}</p>
+            </div>
+        </div>
+    </div>
     {/each}
 </div>
