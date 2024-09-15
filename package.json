@@ -38,8 +38,21 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"@algolia/client-abtesting": "^5.4.1",
+		"@algolia/client-analytics": "^5.4.1",
+		"@algolia/client-insights": "^5.4.1",
+		"@algolia/client-personalization": "^5.4.1",
+		"@algolia/client-query-suggestions": "^5.4.1",
+		"@algolia/client-search": "^5.4.1",
+		"@algolia/client-usage": "^1.4.0",
+		"@algolia/ingestion": "^1.4.1",
+		"@algolia/monitoring": "^1.4.1",
+		"@algolia/recommend": "^5.4.1",
+		"algoliasearch": "^4.24.0",
 		"firebase": "^10.13.0",
 		"firebase-admin": "^12.4.0",
-		"superforms": "^0.0.1"
+		"instantsearch.js": "^4.74.1",
+		"superforms": "^0.0.1",
+		"svelte-algolia-instantsearch": "^0.12.1"
 	}
 }

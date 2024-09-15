@@ -3,6 +3,7 @@
 	import { latitude, longitude } from '$lib/stores/GeoStore';
 	import { onMount } from 'svelte';
 	import { userData } from '$lib/stores/DocStore';
+	import Search from '$lib/components/Search.svelte';
 
 	onMount(async () => {
 		try {
@@ -18,6 +19,10 @@
 
 <AuthCheck>
 	<h1 class="text-2xl font-bold mb-10 text-center">Welcome {$userData?.username}</h1>
+
+	<div class=" flex flex-col justify-center items-center">
+		<Search />
+	</div>
 
 	<a
 		href="/yourInstruments"
