@@ -18,16 +18,10 @@
 </script>
 
 <AuthCheck>
-	<h1 class="text-2xl font-bold mb-10 text-center">Welcome {$userData?.username}</h1>
+	<h1 class="text-2xl font-bold p-10 text-center">Welcome {$userData?.username}</h1>
 
 	<div class=" flex flex-col justify-center items-center">
 		<Search />
 	</div>
 
-	<a
-		href="/yourInstruments"
-		class="block p-4 max-w-sm mx-auto rounded-lg shadow-lg hover:shadow-xl"
-	>
-		<h3 class="text-xl font-semibold mb-2">Your Instruments</h3>
-	</a>
 </AuthCheck>

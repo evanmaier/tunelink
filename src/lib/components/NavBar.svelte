@@ -28,6 +28,9 @@
 				<a href="/addInstrument" class="btn btn-ghost">Add Instrument</a>
 			</li>
 			<li>
+				<a href="/yourInstruments" class="btn btn-ghost">Your Instruments</a>
+			</li>
+			<li>
 				<button on:click={logOut} class="btn btn-primary text-white">Sign Out</button>
 			</li>
 		{:else}

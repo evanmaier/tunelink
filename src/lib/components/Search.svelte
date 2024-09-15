@@ -2,6 +2,7 @@
 	import { onMount } from 'svelte';
 	import algoliasearch from 'algoliasearch';
 	import type { SearchClient, SearchIndex } from 'algoliasearch';
+	import { goto } from '$app/navigation';
 
 	let client: SearchClient;
     let index: SearchIndex
@@ -24,6 +25,11 @@
 			console.error('Error performing search:', error);
 		}
 	}
+
+    function gotoitem() {
+        console.log('hello!');
+        // do stuff here
+    }
 </script>
 
 <div class='mb-4 w-4/12'>
@@ -32,7 +38,7 @@
 
 <div class="grid grid-cols-1 gap-2 max-w-xs">
     {#each hits as hit }
-    <div class="rounded-lg p-2 shadow-md">
+    <button on:click={gotoitem} class="rounded-lg p-2 shadow-md w-full text-left">
         <div class='flex items-center'>
             <img 
                 src="{hit.pictures[0]}" 
@@ -44,6 +50,6 @@
                 <p class='text-md'>{hit.year}</p>
             </div>
         </div>
-    </div>
+    </button>
     {/each}
 </div>
