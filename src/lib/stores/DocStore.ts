@@ -30,7 +30,7 @@ export function docStore<T>(path: string) {
 interface UserData {
 	username: string;
 	email: string;
-	instruments: Array<DocumentReference>;
+	instruments: Array<string>; // holds instrument doc IDs
 }
 
 export const userData: Readable<UserData | null> = derived(user, ($user, set) => {

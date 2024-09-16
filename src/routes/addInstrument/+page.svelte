@@ -18,7 +18,7 @@
 		comment: string;
 		createdAt: Timestamp;
 		rating: number;
-		user: DocumentReference;
+		userID: string;
 	};
 
 	let available = true;
@@ -28,13 +28,13 @@
 	let make: string;
 	let model: string;
 	let year: number;
-	let path: string;
 	let pictures: Array<string> = [];
 	let pricePerDay: number;
 	let address: string;
 	let preview = '';
 	let lat = 0;
 	let lon = 0;
+	let owner = '';
 
 	let form: any;
 
@@ -57,37 +57,36 @@
 
 	async function handleSubmit() {
 		if ($user) {
-			path = `users/${$user.uid}`;
+			owner = $user.uid;
 		}
 
 		const data = {
-			available: available,
-			category: category,
-			condition: condition,
+			available,
+			category,
+			condition,
 			createdAt: Date.now(),
-			description: description,
+			description,
 			location: {lat, lon},
-			make: make,
-			model: model,
-			year: year,
-			owner: doc(db, path),
-			pictures: pictures,
-			pricePerDay: pricePerDay,
-			reviews: new Array<Review>()
+			make,
+			model,
+			year,
+			owner,
+			pictures,
+			pricePerDay,
+			reviews: new Array<Review>(),
 		};
-
-		console.log(data);
 
 		let instruments = $userData?.instruments;
 		if (!instruments) {
 			instruments = [];
 		}
 
+		// update instruments array in user collection
 		await setDoc(instrumentRef, data)
 			.then(async () => {
-				instruments.push(instrumentRef);
+				instruments.push(instrumentRef.id);
 				await updateDoc(userRef, {
-					instruments: instruments
+					instruments
 				});
 			})
 			.catch((error) => {

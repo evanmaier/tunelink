@@ -1,23 +1,26 @@
 <script lang="ts">
 	import { userData } from '$lib/stores/DocStore';
-	import { type DocumentData, getDoc } from 'firebase/firestore';
+	import { doc, getDoc, type DocumentData } from 'firebase/firestore';
 	import AuthCheck from '$lib/components/AuthCheck.svelte';
+	import { db } from '$lib/firebase';
 
+	// get the user's instrument objects
 	let instruments: Array<DocumentData | undefined> = [];
 	$: if ($userData?.instruments) {
 		instruments = [];
 		Promise.all(
-			$userData.instruments.map(async (ref) => {
+			$userData.instruments.map(async (id) => {
 				try {
-					const doc = await getDoc(ref);
-					return doc.data();
+					const ref = doc(db, 'instruments', id);
+					const snapshot = await getDoc(ref);
+					return snapshot.data();
 				} catch {
 					console.log('something went wrong');
 					return undefined;
 				}
 			})
 		).then((docs) => {
-			instruments = docs.filter((doc) => doc);
+			instruments = docs.filter((data) => data);
 		});
 	}
 </script>

@@ -4,7 +4,7 @@
 	import { auth } from '$lib/firebase';
 	import { goto } from '$app/navigation';
 	import { db } from '$lib/firebase';
-	import { doc, DocumentReference, getDoc, setDoc } from 'firebase/firestore';
+	import { doc, getDoc, setDoc } from 'firebase/firestore';
 
 	async function isAvailable(username: string) {
 		try {
@@ -33,7 +33,7 @@
 		try {
 			console.log('creating user', user.uid);
 			const userDocRef = doc(db, 'users', user.uid);
-			const instruments: Array<DocumentReference> = [];
+			const instruments: Array<string> = [];
 			await setDoc(userDocRef, {
 				email: user.email,
 				username: username,
