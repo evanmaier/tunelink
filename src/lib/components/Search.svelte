@@ -27,8 +27,7 @@
 	}
 
 	function gotoitem(hit: any) {
-		console.log(hit);
-		goto(`/items/${hit.id}`);
+		goto(`/items/${hit.objectID}`);
 	}
 </script>
 
