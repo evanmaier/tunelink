@@ -121,10 +121,10 @@
 </script>
 
 <AuthCheck>
-	<div class="h-screen flex flex-col items-center justify-center">
-		<h2 class="mb-4">Add an instrument</h2>
+	<div class="h-screen flex flex-col items-center">
+		<h2 class="text-2xl font-bold text-center p-2">Add Instrument</h2>
 		<form bind:this={form} on:submit|preventDefault={handleSubmit}>
-			<div class="form-control mb-4">
+			<div class="form-control">
 				<label class="label cursor-pointer">
 					<span class="label-text">Available</span>
 					<input type="checkbox" class="toggle" bind:checked={available} required />
@@ -135,7 +135,7 @@
 				<span class="label-text">Category</span>
 			</div>
 			<div class="mb-4">
-				<select bind:value={category} class="select select-bordered w-full max-w-xs" required>
+				<select bind:value={category} class="select select-bordered w-full" required>
 					<option disabled selected>Select</option>
 					<option>Guitar</option>
 					<option>Bass</option>
@@ -147,7 +147,7 @@
 				<span class="label-text">Condition</span>
 			</div>
 			<div class="mb-4">
-				<select bind:value={condition} class="select select-bordered w-full max-w-xs" required>
+				<select bind:value={condition} class="select select-bordered w-full" required>
 					<option disabled selected>Select</option>
 					<option>Excellent</option>
 					<option>Good</option>
@@ -160,24 +160,24 @@
 			</div>
 			<textarea
 				bind:value={description}
-				class="textarea textarea-bordered w-full max-w-xs"
+				class="textarea textarea-bordered w-full"
 				required
 			/>
 
 			<div class="label">
 				<span class="label-text">Make</span>
 			</div>
-			<input type="text" bind:value={make} class="input input-bordered w-full max-w-xs" required />
+			<input type="text" bind:value={make} class="input input-bordered w-full" required />
 
 			<div class="label">
 				<span class="label-text">Model</span>
 			</div>
-			<input type="text" bind:value={model} class="input input-bordered w-full max-w-xs" required />
+			<input type="text" bind:value={model} class="input input-bordered w-full" required />
 
 			<div class="label">
 				<span class="label-text">Year</span>
 			</div>
-			<input type="text" bind:value={year} class="input input-bordered w-full max-w-xs" required />
+			<input type="text" bind:value={year} class="input input-bordered w-full" required />
 
 			<div class="label">
 				<span class="label-text">Price per day</span>
@@ -185,7 +185,7 @@
 			<input
 				type="text"
 				bind:value={pricePerDay}
-				class="input input-bordered w-full max-w-xs"
+				class="input input-bordered w-full"
 				required
 			/>
 
@@ -196,7 +196,7 @@
 				on:change={upload}
 				type="file"
 				multiple
-				class="file-input file-input-bordered w-full max-w-xs"
+				class="file-input file-input-bordered w-full"
 				accept="image/png, image/jpeg, image/gif, image/webp"
 				required
 			/>
@@ -204,17 +204,15 @@
 			<div class="label">
 				<span class="label-text">Address</span>
 			</div>
-			<div class="flex">
+			<div class="flex flex-col">
 				<input
 					on:input={geocode}
 					type="text"
 					bind:value={address}
-					class="input input-bordered w-full max-w-xs"
+					class="input input-bordered w-full"
 				/>
-				<button class="btn btn-success" on:click|preventDefault={confirmAddress}>Confirm</button>
+				<button on:click|preventDefault={confirmAddress} class="text-sm max-w-[300px] truncate">{preview}</button>
 			</div>
-
-			<p class="text-sm max-w-xs">{preview}</p>
 
 			<div class="py-4">
 				<button type="submit" class="btn btn-primary w-full">Submit</button>

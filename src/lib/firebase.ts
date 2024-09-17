@@ -3,10 +3,9 @@ import { initializeApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
 import { getStorage } from 'firebase/storage';
 import { getFirestore } from 'firebase/firestore';
-import { WEB_API_KEY } from '$env/static/private';
 
 const firebaseConfig = {
-	apiKey: WEB_API_KEY,
+	apiKey: "AIzaSyCe_rcEuiRwvclgi2jYMuE-fSIFMt33CFA",
 
 	authDomain: 'tunelink-99edc.firebaseapp.com',
 
