@@ -10,7 +10,7 @@
 	let hits: any[] = [];
 
 	onMount(async () => {
-		client = algoliasearch('1E1MHC45I5', 'e908d30f05b78357334a123381635a38');
+		client = algoliasearch('1E1MHC45I5', 'af24678105793bd1e288cfb617b53e2d');
 		index = client.initIndex('instruments');
 	});
 
