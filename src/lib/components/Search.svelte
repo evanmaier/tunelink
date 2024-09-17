@@ -18,7 +18,7 @@
 		try {
 			const searchResponse = await index.search(query, {
 				hitsPerPage: 3,
-				attributesToRetrieve: ['model', 'make', 'year', 'pictures', 'id']
+				attributesToRetrieve: ['name', 'pictures', 'id']
 			});
 			hits = searchResponse.hits;
 		} catch (error) {
@@ -48,8 +48,7 @@
 			<div class="flex items-center">
 				<img src={hit.pictures[0]} alt="pic" class="h-20 w-20 object-cover rounded-md mr-4" />
 				<div>
-					<p class="text-lg font-semibold">{hit.make} {hit.model}</p>
-					<p class="text-md">{hit.year}</p>
+					<p class="text-lg font-semibold">{hit.name}</p>
 				</div>
 			</div>
 		</button>

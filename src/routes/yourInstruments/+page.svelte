@@ -39,7 +39,7 @@
 			{#each instruments as i}
 				{#if i}
 					<div class="flex flex-col w-96 p-4">
-						<h3 class="text-bold text-xl text-center p-4">{i.year} {i.make} {i.model}</h3>
+						<h3 class="text-bold text-xl text-center p-4">{i.name}</h3>
 						{#each i.pictures as picURL}
 							<img src={picURL} alt="instrument" class="max-w-full max-h-[400px] object-cover" />
 						{/each}

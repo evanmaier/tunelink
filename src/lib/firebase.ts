@@ -5,7 +5,7 @@ import { getStorage } from 'firebase/storage';
 import { getFirestore } from 'firebase/firestore';
 
 const firebaseConfig = {
-	apiKey: "AIzaSyCe_rcEuiRwvclgi2jYMuE-fSIFMt33CFA",
+	apiKey: 'AIzaSyCe_rcEuiRwvclgi2jYMuE-fSIFMt33CFA',
 
 	authDomain: 'tunelink-99edc.firebaseapp.com',
 

@@ -25,9 +25,7 @@
 	let category: string;
 	let condition: string;
 	let description: string;
-	let make: string;
-	let model: string;
-	let year: number;
+	let name: string;
 	let pictures: Array<string> = [];
 	let pricePerDay: number;
 	let address: string;
@@ -66,14 +64,12 @@
 			condition,
 			createdAt: Date.now(),
 			description,
-			location: {lat, lon},
-			make,
-			model,
-			year,
+			location: { lat, lon },
+			name,
 			owner,
 			pictures,
 			pricePerDay,
-			reviews: new Array<Review>(),
+			reviews: new Array<Review>()
 		};
 
 		let instruments = $userData?.instruments;
@@ -156,38 +152,34 @@
 			</div>
 
 			<div class="label">
+				<span class="label-text">Name</span>
+			</div>
+			<input type="text" bind:value={name} class="input input-bordered w-full" required />
+
+			<div class="label">
+				<span class="label-text">Price</span>
+			</div>
+			<input type="text" bind:value={pricePerDay} class="input input-bordered w-full" required />
+
+			<div class="label">
 				<span class="label-text">Description</span>
 			</div>
-			<textarea
-				bind:value={description}
-				class="textarea textarea-bordered w-full"
-				required
-			/>
+			<textarea bind:value={description} class="textarea textarea-bordered w-full" required />
 
 			<div class="label">
-				<span class="label-text">Make</span>
+				<span class="label-text">Address</span>
 			</div>
-			<input type="text" bind:value={make} class="input input-bordered w-full" required />
-
-			<div class="label">
-				<span class="label-text">Model</span>
+			<div class="flex flex-col">
+				<input
+					on:input={geocode}
+					type="text"
+					bind:value={address}
+					class="input input-bordered w-full"
+				/>
+				<button on:click|preventDefault={confirmAddress} class="text-sm max-w-[300px] truncate"
+					>{preview}</button
+				>
 			</div>
-			<input type="text" bind:value={model} class="input input-bordered w-full" required />
-
-			<div class="label">
-				<span class="label-text">Year</span>
-			</div>
-			<input type="text" bind:value={year} class="input input-bordered w-full" required />
-
-			<div class="label">
-				<span class="label-text">Price per day</span>
-			</div>
-			<input
-				type="text"
-				bind:value={pricePerDay}
-				class="input input-bordered w-full"
-				required
-			/>
 
 			<div class="label">
 				<span class="label-text">Choose images</span>
@@ -200,19 +192,6 @@
 				accept="image/png, image/jpeg, image/gif, image/webp"
 				required
 			/>
-
-			<div class="label">
-				<span class="label-text">Address</span>
-			</div>
-			<div class="flex flex-col">
-				<input
-					on:input={geocode}
-					type="text"
-					bind:value={address}
-					class="input input-bordered w-full"
-				/>
-				<button on:click|preventDefault={confirmAddress} class="text-sm max-w-[300px] truncate">{preview}</button>
-			</div>
 
 			<div class="py-4">
 				<button type="submit" class="btn btn-primary w-full">Submit</button>
