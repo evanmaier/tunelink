@@ -1,55 +1,66 @@
 <script lang="ts">
 	import { userData } from '$lib/stores/DocStore';
-	import { doc, getDoc, type DocumentData } from 'firebase/firestore';
+	import { user } from '$lib/stores/AuthStore';
+	import {
+		doc,
+		getDoc,
+		deleteDoc,
+		updateDoc,
+		type DocumentData,
+		type DocumentReference
+	} from 'firebase/firestore';
 	import AuthCheck from '$lib/components/AuthCheck.svelte';
 	import { db } from '$lib/firebase';
 
 	// get the user's instrument objects
-	let instruments: Array<DocumentData | undefined> = [];
+	let iPromise: Promise<Map<DocumentReference, DocumentData>>;
 	$: if ($userData?.instruments) {
-		instruments = [];
-		Promise.all(
-			$userData.instruments.map(async (id) => {
-				try {
-					const ref = doc(db, 'instruments', id);
-					const snapshot = await getDoc(ref);
-					return snapshot.data();
-				} catch {
-					console.log('something went wrong');
-					return undefined;
-				}
-			})
-		).then((docs) => {
-			instruments = docs.filter((data) => data);
-		});
+		iPromise = getInstruments($userData.instruments);
+	}
+
+	async function getInstruments(ids: Array<string>) {
+		let iMap: Map<DocumentReference, DocumentData> = new Map();
+		for (const id of ids) {
+			const ref = doc(db, 'instruments', id);
+			const snap = await getDoc(ref);
+			if (snap.exists()) {
+				iMap.set(ref, snap.data());
+			}
+		}
+		return iMap;
+	}
+
+	async function deleteInstrument(iRef: DocumentReference) {
+		await deleteDoc(iRef);
+		// update instruments array in user document
+		if ($user && $userData?.instruments) {
+			const userRef = doc(db, 'users', $user?.uid);
+			const i = $userData?.instruments.filter((id) => iRef.id != id);
+			await updateDoc(userRef, {
+				instruments: i
+			});
+		}
 	}
 </script>
 
-<h2 class="font-bold text-lg underline">Todo</h2>
-<ul>
-	<li>Editing</li>
-	<li>Stats</li>
-	<li>Removal</li>
-</ul>
-
 <AuthCheck>
-	<h2 class="text-2xl font-bold text-center">Your Instruments</h2>
-	<div class="flex p-4 justify-center">
-		{#if $userData}
-			{#each instruments as i}
-				{#if i}
+	{#await iPromise}
+		<p>Loading Instruments...</p>
+	{:then iMap}
+		<h2 class="text-2xl font-bold text-center">Your Instruments</h2>
+		<div class="flex flex-col p-4 justify-center items-center">
+			{#each [...(iMap || [])] as [ref, iData]}
+				{#if iData}
 					<div class="flex flex-col w-96 p-4">
-						<h3 class="text-bold text-xl text-center p-4">{i.name}</h3>
-						{#each i.pictures as picURL}
+						<h3 class="text-bold text-xl text-center p-4">{iData.name}</h3>
+						{#each iData.pictures as picURL}
 							<img src={picURL} alt="instrument" class="max-w-full max-h-[400px] object-cover" />
 						{/each}
+						<button on:click={() => deleteInstrument(ref)} class="btn btn-error mt-2">Delete</button
+						>
 					</div>
-				{:else}
-					<p>no instruments yet, consider adding one</p>
 				{/if}
 			{/each}
-		{:else}
-			<p>loading...</p>
-		{/if}
-	</div>
+		</div>
+	{/await}
 </AuthCheck>
