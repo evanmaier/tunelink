@@ -31,7 +31,7 @@
 	let address: string;
 	let preview = '';
 	let lat = 0;
-	let lon = 0;
+	let lng = 0;
 	let owner = '';
 
 	let form: any;
@@ -64,7 +64,7 @@
 			condition,
 			createdAt: Date.now(),
 			description,
-			location: { lat, lon },
+			_geoloc: { lat, lng },
 			name,
 			owner,
 			pictures,
@@ -93,7 +93,7 @@
 	}
 
 	async function geocode() {
-		if (address && address.length > 4) {
+		if (address) {
 			const location = `${$longitude},${$latitude}`;
 			const response = await fetch('/api/mapbox', {
 				method: 'POST',
@@ -103,7 +103,7 @@
 			const data = await response.json();
 			try {
 				preview = data.features[0].place_name;
-				[lon, lat] = data.features[0].center;
+				[lng, lat] = data.features[0].center;
 			} catch {
 				preview = 'keep typing';
 			}
