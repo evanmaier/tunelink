@@ -62,7 +62,7 @@
 			available,
 			category,
 			condition,
-			createdAt: Date.now(),
+			updatedAt: Timestamp.fromDate(new Date()),
 			description,
 			_geoloc: { lat, lng },
 			name,
@@ -77,8 +77,7 @@
 			instruments = [];
 		}
 
-		// update instruments array in user collection
-		await setDoc(instrumentRef, data)
+		setDoc(instrumentRef, data)
 			.then(async () => {
 				instruments.push(instrumentRef.id);
 				await updateDoc(userRef, {
