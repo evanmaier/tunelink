@@ -16,7 +16,7 @@
 
 	type Review = {
 		comment: string;
-		createdAt: Timestamp;
+		timestamp: Timestamp;
 		rating: number;
 		userID: string;
 	};
@@ -62,7 +62,7 @@
 			available,
 			category,
 			condition,
-			updatedAt: Timestamp.fromDate(new Date()),
+			timestamp: Timestamp.fromDate(new Date()),
 			description,
 			_geoloc: { lat, lng },
 			name,
@@ -158,7 +158,7 @@
 			<div class="label">
 				<span class="label-text">Price</span>
 			</div>
-			<input type="text" bind:value={pricePerDay} class="input input-bordered w-full" required />
+			<input type="number" bind:value={pricePerDay} class="input input-bordered w-full" required />
 
 			<div class="label">
 				<span class="label-text">Description</span>

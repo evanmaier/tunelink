@@ -11,6 +11,7 @@
 	} from 'firebase/firestore';
 	import AuthCheck from '$lib/components/AuthCheck.svelte';
 	import { db } from '$lib/firebase';
+	import { goto } from '$app/navigation';
 
 	// get the user's instrument objects
 	let iPromise: Promise<Map<DocumentReference, DocumentData>>;
@@ -41,6 +42,10 @@
 			});
 		}
 	}
+
+	function gotoEdit(id: string) {
+		goto(`yourInstruments/edit/${id}`);
+	}
 </script>
 
 <AuthCheck>
@@ -56,6 +61,7 @@
 						{#each iData.pictures as picURL}
 							<img src={picURL} alt="instrument" class="max-w-full max-h-[400px] object-cover" />
 						{/each}
+						<button on:click={() => gotoEdit(ref.id)} class="btn btn-primary mt-2">Edit</button>
 						<button on:click={() => deleteInstrument(ref)} class="btn btn-error mt-2">Delete</button
 						>
 					</div>

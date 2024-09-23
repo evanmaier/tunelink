@@ -37,7 +37,7 @@
 				start: startDate,
 				end: endDate
 			},
-			updatedAt: Timestamp.fromDate(new Date())
+			timestamp: Timestamp.fromDate(new Date())
 		};
 
 		addDoc(collection(db, 'requests'), data)
