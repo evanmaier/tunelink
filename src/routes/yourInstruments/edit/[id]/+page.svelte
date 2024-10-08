@@ -36,17 +36,33 @@
 		<input id="name" name="name" type="text" value={i?.name} class="input input-bordered w-full" />
 
 		<label for="price" class="label">Price</label>
-		<input id="price" name="price" type="number" value={i?.pricePerDay} class="input input-bordered w-full" />
+		<input
+			id="price"
+			name="price"
+			type="number"
+			value={i?.price}
+			class="input input-bordered w-full"
+		/>
 
 		<label for="condition" class="label">Condition</label>
-		<select id="condition" name="condition" value={i?.condition} class="select select-bordered w-full">
+		<select
+			id="condition"
+			name="condition"
+			value={i?.condition}
+			class="select select-bordered w-full"
+		>
 			<option>Excellent</option>
 			<option>Good</option>
 			<option>Poor</option>
 		</select>
 
 		<label for="description" class="label">Description</label>
-		<textarea id="description" name="description" value={i?.description} class="textarea textarea-bordered" />
+		<textarea
+			id="description"
+			name="description"
+			value={i?.description}
+			class="textarea textarea-bordered"
+		/>
 
 		<button type="submit" class="btn btn-primary mt-4">Submit</button>
 
