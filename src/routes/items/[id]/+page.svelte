@@ -56,9 +56,7 @@
 			<h2 class="text-2xl font-bold text-center p-2">{i.name}</h2>
 
 			<div class="flex p-2">
-				{#each i.pictures as picURL}
-					<img src={picURL} alt="instrument" class="max-w-full max-h-[600px] object-cover" />
-				{/each}
+				<img src={i.imageURL} alt="instrument" class="max-w-full max-h-[600px] object-cover" />
 			</div>
 
 			<p class="max-w-prose p-2">{i.description}</p>

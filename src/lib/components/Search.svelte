@@ -24,7 +24,7 @@
 			.search(query, {
 				filters: `NOT owner:${$user?.uid}`,
 				hitsPerPage: 3,
-				attributesToRetrieve: ['name', 'pictures', 'id']
+				attributesToRetrieve: ['name', 'imageURL', 'id']
 			})
 			.then(({ hits }) => {
 				searchHits = hits;
@@ -41,7 +41,7 @@
 				aroundRadius: radius * 1000,
 				aroundLatLng: `${$latitude}, ${$longitude}`,
 				hitsPerPage: 3,
-				attributesToRetrieve: ['name', 'pictures', 'id']
+				attributesToRetrieve: ['name', 'imageURL', 'id']
 			})
 			.then(({ hits }) => {
 				localHits = hits;
@@ -71,7 +71,7 @@
 	{#each searchHits as hit}
 		<button on:click={() => gotoitem(hit)} class="rounded-lg p-2 shadow-md w-full text-left">
 			<div class="flex items-center">
-				<img src={hit.pictures[0]} alt="pic" class="h-20 w-20 object-cover rounded-md mr-4" />
+				<img src={hit.imageURL} alt="pic" class="h-20 w-20 object-cover rounded-md mr-4" />
 				<p class="text-lg font-semibold">{hit.name}</p>
 			</div>
 		</button>
@@ -90,7 +90,7 @@
 		<button on:click={() => gotoitem(hit)} class="rounded-lg p-2 shadow-md w-full text-left">
 			<div class="flex flex-col items-center">
 				<h3 class="text-lg font-semibold">{hit.name}</h3>
-				<img src={hit.pictures[0]} alt="pic" class="h-96 w-96 object-cover rounded-md mr-4" />
+				<img src={hit.imageURL} alt="pic" class="h-96 w-96 object-cover rounded-md mr-4" />
 			</div>
 		</button>
 	{/each}

@@ -18,7 +18,7 @@ export const actions = {
 			await ref.update({
 				available: available == 'on',
 				name,
-				pricePerDay: parseInt(price),
+				price: parseInt(price),
 				condition,
 				description,
 				timestamp: FieldValue.serverTimestamp()
@@ -26,6 +26,6 @@ export const actions = {
 		} catch (error: any) {
 			return fail(400, { error: error.message });
 		}
-        redirect(302, '/yourInstruments');
+		redirect(302, '/yourInstruments');
 	}
 } satisfies Actions;

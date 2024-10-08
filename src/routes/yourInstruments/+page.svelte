@@ -58,9 +58,11 @@
 				{#if iData}
 					<div class="flex flex-col w-96 p-4">
 						<h3 class="text-bold text-xl text-center p-4">{iData.name}</h3>
-						{#each iData.pictures as picURL}
-							<img src={picURL} alt="instrument" class="max-w-full max-h-[400px] object-cover" />
-						{/each}
+						<img
+							src={iData.imageURL}
+							alt="instrument"
+							class="max-w-full max-h-[400px] object-cover"
+						/>
 						<button on:click={() => gotoEdit(ref.id)} class="btn btn-primary mt-2">Edit</button>
 						<button on:click={() => deleteInstrument(ref)} class="btn btn-error mt-2">Delete</button
 						>
