@@ -22,7 +22,7 @@ export const actions: Actions = {
 			name: data.get('name') as string,
 			owner: uid,
 			imageURL: data.get('imageURL') as string,
-			price: data.get('price')
+			price: parseInt(data.get('price') as string)
 		};
 
 		console.log(instrument);
