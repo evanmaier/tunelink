@@ -5,6 +5,7 @@
 	import { db } from '$lib/firebase';
 	import type { ActionData } from './$types';
 	import AuthCheck from '$lib/components/AuthCheck.svelte';
+	import { enhance } from '$app/forms';
 
 	export let form: ActionData;
 	let i: DocumentData | undefined;
@@ -22,7 +23,7 @@
 </script>
 
 <AuthCheck>
-	<form method="POST" class="flex flex-col mx-auto max-w-sm">
+	<form method="POST" use:enhance class="flex flex-col mx-auto max-w-sm">
 		<h2 class="text-2xl font-bold text-center p-2">Edit Instrument</h2>
 
 		<input type="hidden" name="id" value={ref?.id} />
