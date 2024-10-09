@@ -31,19 +31,18 @@
 </script>
 
 <AuthCheck>
-	{#if data.instrument}
 		<div class="flex flex-col items-center p-10">
-			<h2 class="text-2xl font-bold text-center p-2">{data.instrument.name}</h2>
+			<h2 class="text-2xl font-bold text-center p-2">{data?.name}</h2>
 
 			<div class="flex p-2">
 				<img
-					src={data.instrument.imageURL}
+					src={data?.imageURL}
 					alt="instrument"
 					class="max-w-full max-h-[600px] object-cover"
 				/>
 			</div>
 
-			<p class="max-w-prose p-2">{data.instrument.description}</p>
+			<p class="max-w-prose p-2">{data?.description}</p>
 
 			<div class="h-screen flex flex-col items-center">
 				<h2 class="text-2xl font-bold text-center p-2">Rental Request</h2>
@@ -66,5 +65,4 @@
 				</form>
 			</div>
 		</div>
-	{/if}
 </AuthCheck>
