@@ -1,17 +1,16 @@
 import { adminDB } from '$lib/server/admin';
-import { Filter, type QueryDocumentSnapshot } from 'firebase-admin/firestore';
 import type { PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ params }) => {
 	const requestsRef = adminDB.collection('requests');
 
-	const sentRequests = await requestsRef.where('renterID', '==', params.id).get();
-	const receivedRequests = await requestsRef.where('ownerID', '==', params.id).get();
+	const sentRequests = await requestsRef.where('renterID', '==', params.userID).get();
+	const receivedRequests = await requestsRef.where('ownerID', '==', params.userID).get();
 
 	const allDocs = [...sentRequests.docs, ...receivedRequests.docs];
 
 	let requestData = await Promise.all(
-		allDocs.map(async (doc: QueryDocumentSnapshot) => {
+		allDocs.map(async (doc) => {
 			const id = doc.get('instrumentID');
 			const instrumentDoc = await adminDB.collection('instruments').doc(id).get();
 			const lastMessageSnapshot = await requestsRef
@@ -24,6 +23,7 @@ export const load: PageServerLoad = async ({ params }) => {
 			const lastMessage = lastMessageSnapshot.docs[0];
 
 			return {
+				id: doc.id,
 				imageURL: instrumentDoc.get('imageURL') as string,
 				message: lastMessage?.get('message') || '',
 				date: lastMessage?.get('timestamp').toDate()
