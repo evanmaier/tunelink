@@ -1,6 +1,6 @@
 import type { PageServerLoad } from './$types';
 import { adminDB } from '$lib/server/admin';
-import { FieldValue, Timestamp, type DocumentData } from 'firebase-admin/firestore';
+import { FieldValue, type DocumentData } from 'firebase-admin/firestore';
 import { fail } from '@sveltejs/kit';
 
 let instrumentData: DocumentData | undefined;

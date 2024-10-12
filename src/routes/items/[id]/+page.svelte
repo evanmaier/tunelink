@@ -22,7 +22,7 @@
 
 		<div class="h-screen flex flex-col items-center">
 			<h2 class="text-2xl font-bold text-center p-2">Rental Request</h2>
-			
+
 			<form method="post" use:enhance>
 				<input type="hidden" name="uid" value={$user?.uid} />
 
