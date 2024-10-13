@@ -16,7 +16,7 @@ export const load: PageServerLoad = async ({ params }) => {
 			const lastMessageSnapshot = await requestsRef
 				.doc(doc.id)
 				.collection('messages')
-				.orderBy('timestamp')
+				.orderBy('timestamp', 'desc')
 				.limit(1)
 				.get();
 

@@ -9,16 +9,16 @@
 
 <div class="flex flex-col items-center gap-4 p-10">
 	<h2 class="text-2xl font-bold text-center mb-5">Rental Requests</h2>
-	<div class="grid grid-cols-3 gap-4 items-center">
-		{#each data?.requests as request}
-			<button
-				on:click={() => gotoRequest(request?.id)}
-				class="rounded-lg p-2 shadow-md w-full text-left"
-			>
+	{#each data?.requests as request}
+		<button
+			on:click={() => gotoRequest(request?.id)}
+			class="rounded-lg p-2 shadow-md w-full text-left"
+		>
+			<div class="flex flex-row gap-4 items-center max-w-lg">
 				<img src={request.imageURL} alt="pic" class="h-20 w-20 object-cover rounded-md" />
 				<p class="text-lg font-semibold">{request.message}</p>
 				<p>{request.date.toISOString().split('T')[0]}</p>
-			</button>
-		{/each}
-	</div>
+			</div>
+		</button>
+	{/each}
 </div>

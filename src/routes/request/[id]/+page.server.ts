@@ -16,6 +16,6 @@ export const load: PageServerLoad = async ({ params }) => {
 		price: instrumentDoc.get('price'),
 		name: instrumentDoc.get('name'),
 		description: instrumentDoc.get('description'),
-		dates: requestDoc.get('Dates'),
+		dates: requestDoc.get('Dates')
 	};
 };
