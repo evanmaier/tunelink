@@ -6,16 +6,6 @@ export const load: PageServerLoad = async ({ params }) => {
 
 	const requestDoc = await requestRef.get();
 
-	const messages = await requestRef.collection('messages').orderBy('timestamp').get();
-
-	let messageData = messages.docs.map((doc) => {
-		return {
-			message: doc.get('message'),
-			senderID: doc.get('senderID'),
-			timestamp: doc.get('timestamp').toDate()
-		};
-	});
-
 	const instrumentDoc = await adminDB
 		.collection('instruments')
 		.doc(requestDoc.get('instrumentID'))
@@ -27,7 +17,5 @@ export const load: PageServerLoad = async ({ params }) => {
 		name: instrumentDoc.get('name'),
 		description: instrumentDoc.get('description'),
 		dates: requestDoc.get('Dates'),
-		requestID: requestRef.id,
-		messages: messageData
 	};
 };
