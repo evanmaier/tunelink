@@ -11,7 +11,7 @@
 	let query = '';
 	let searchHits: any[] = [];
 	let localHits: any[] = [];
-	let radius = 10; // 10 km
+	let radius = 50;
 
 	onMount(async () => {
 		client = algoliasearch('1E1MHC45I5', 'af24678105793bd1e288cfb617b53e2d');
@@ -80,9 +80,16 @@
 
 <h2 class="text-2xl font-bold text-center mt-10">Local Instruments</h2>
 
-<div class="flex flex-row items-center space-x-2">
-	<label for="radius" class="label-text">Search Radius km</label>
-	<input type="text" id="radius" bind:value={radius} on:change={localSearch} class="max-w-20" />
+<div class="flex flex-col items-center w-1/6">
+	<label for="radius" class="label-text p-2">Search Radius (km)</label>
+	<input type="range" min="0" max="100" id="radius" bind:value={radius} on:change={localSearch} class="range w-full" step="25" />
+	<div class="flex w-full justify-between px-2 text-xs">
+		<span>0</span>
+		<span>|</span>
+		<span>|</span>
+		<span>|</span>
+		<span>100</span>
+	  </div>
 </div>
 
 <div class="grid grid-flow-col auto-cols-max gap-2">
