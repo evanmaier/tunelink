@@ -1,26 +1,12 @@
-import type { PageServerLoad } from './$types';
 import { adminDB } from '$lib/server/admin';
-import { FieldValue, type DocumentData } from 'firebase-admin/firestore';
+import { FieldValue } from 'firebase-admin/firestore';
 import { fail } from '@sveltejs/kit';
-
-let instrumentData: DocumentData | undefined;
-
-export const load: PageServerLoad = async ({ params }) => {
-	const ref = adminDB.collection('instruments').doc(params.id);
-	const doc = await ref.get();
-	instrumentData = doc.data();
-
-	return {
-		name: instrumentData?.name,
-		imageURL: instrumentData?.imageURL,
-		description: instrumentData?.description
-	};
-};
 
 export const actions = {
 	default: async ({ request, params }) => {
 		const data = await request.formData();
 		const uid = data.get('uid') as string;
+		const ownerID = data.get('ownerID') as string
 		const startDate = data.get('startDate') as string;
 		const endDate = data.get('endDate') as string;
 		const message = data.get('message') as string;
@@ -28,7 +14,7 @@ export const actions = {
 		try {
 			const requestRef = await adminDB.collection('requests').add({
 				instrumentID: params.id,
-				ownerID: instrumentData?.owner,
+				ownerID: ownerID,
 				renterID: uid,
 				timestamp: FieldValue.serverTimestamp(),
 				Dates: {

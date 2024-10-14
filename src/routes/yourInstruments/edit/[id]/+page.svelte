@@ -9,11 +9,10 @@
 
 	export let form: ActionData;
 	let i: DocumentData | undefined;
-	let ref: DocumentReference;
+	const ref = doc(db, 'instruments', $page.params.id);
 
 	onMount(async () => {
 		try {
-			ref = doc(db, 'instruments', $page.params.id);
 			const snapshot = await getDoc(ref);
 			i = snapshot.data();
 		} catch (error: any) {

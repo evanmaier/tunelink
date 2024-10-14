@@ -19,9 +19,9 @@
 
 	const messages = writable<Message[]>([]);
 	const messagesRef = collection(db, `requests/${$page.params.id}/messages`);
+	const q = query(messagesRef, orderBy('timestamp', 'asc'));
 
 	onMount(() => {
-		const q = query(messagesRef, orderBy('timestamp', 'asc'));
 		const unsubscribe = onSnapshot(q, (querySnapshot) => {
 			messages.set(querySnapshot.docs.map((doc) => doc.data() as Message));
 		});

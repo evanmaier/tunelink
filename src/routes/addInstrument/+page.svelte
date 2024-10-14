@@ -29,7 +29,7 @@
 	async function geocode() {
 		if (address) {
 			const location = `${$longitude},${$latitude}`;
-			const response = await fetch('/api/mapbox', {
+			const response = await fetch('/api/mapbox/forward', {
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json' },
 				body: JSON.stringify({ address, location })
