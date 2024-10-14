@@ -39,6 +39,16 @@
 
 		newMessage = '';
 	}
+
+	async function acceptRequest() {
+		// mark request as accepted, send notification to renter
+		// perhaps this should archive the request
+	}
+
+	async function rejectRequest() {
+		// mark request as rejected, send notification to renter
+		// perhaps this should archive or delete the request
+	}
 </script>
 
 <div class="grid grid-cols-2 gap-4 p-4">
@@ -50,6 +60,14 @@
 			<p>name: {data.name}</p>
 			<p>price: ${data.price}</p>
 			<p>description: {data.description}</p>
+			<div class="flex gap-4">
+				<button on:click={acceptRequest} class="btn btn-success">
+					Accept
+				</button>
+				<button on:click={rejectRequest} class="btn btn-error">
+					Reject
+				</button>
+			</div>
 		</div>
 	</div>
 
