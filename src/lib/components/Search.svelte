@@ -82,14 +82,23 @@
 
 <div class="flex flex-col items-center w-1/6">
 	<label for="radius" class="label-text p-2">Search Radius (km)</label>
-	<input type="range" min="0" max="100" id="radius" bind:value={radius} on:change={localSearch} class="range w-full" step="25" />
+	<input
+		type="range"
+		min="0"
+		max="100"
+		id="radius"
+		bind:value={radius}
+		on:change={localSearch}
+		class="range w-full"
+		step="25"
+	/>
 	<div class="flex w-full justify-between px-2 text-xs">
 		<span>0</span>
 		<span>|</span>
 		<span>|</span>
 		<span>|</span>
 		<span>100</span>
-	  </div>
+	</div>
 </div>
 
 <div class="grid grid-flow-col auto-cols-max gap-2">

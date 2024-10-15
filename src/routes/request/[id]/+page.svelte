@@ -61,12 +61,8 @@
 			<p>price: ${data.price}</p>
 			<p>description: {data.description}</p>
 			<div class="flex gap-4">
-				<button on:click={acceptRequest} class="btn btn-success">
-					Accept
-				</button>
-				<button on:click={rejectRequest} class="btn btn-error">
-					Reject
-				</button>
+				<button on:click={acceptRequest} class="btn btn-success"> Accept </button>
+				<button on:click={rejectRequest} class="btn btn-error"> Reject </button>
 			</div>
 		</div>
 	</div>
