@@ -1,88 +1,126 @@
 <script lang="ts">
-	import { page } from '$app/stores';
-	import { onMount } from 'svelte';
-	import {
-		doc,
-		getDoc,
-		addDoc,
-		collection,
-		Timestamp,
-		type DocumentData
-	} from 'firebase/firestore';
-	import { db } from '$lib/firebase';
+	import { enhance } from '$app/forms';
 	import AuthCheck from '$lib/components/AuthCheck.svelte';
 	import { user } from '$lib/stores/AuthStore';
+	import { onMount } from 'svelte';
+	import type { ActionData } from './$types';
+	import { db } from '$lib/firebase';
+	import { page } from '$app/stores';
+	import { doc, getDoc, type DocumentData } from 'firebase/firestore';
 
-	let i: DocumentData | undefined;
-	let startDate = '';
-	let endDate = '';
+	export let form: ActionData;
 	const today = new Date().toISOString().split('T')[0];
+	let startDate: string;
+	let location = '';
+
+	const instrumentRef = doc(db, 'instruments', $page.params.id);
+	let instrumentData: DocumentData | undefined;
 
 	onMount(async () => {
-		try {
-			const ref = doc(db, 'instruments', $page.params.id);
-			const snapshot = await getDoc(ref);
-			i = snapshot.data();
-		} catch (error: any) {
-			console.log(error.message);
-		}
+		const instrumentSnap = await getDoc(instrumentRef);
+		instrumentData = instrumentSnap.data();
+		geocode();
 	});
 
-	async function handleSubmit() {
-		const data = {
-			instrumentID: $page.params.id,
-			ownerID: i?.owner,
-			renterID: $user?.uid,
-			dates: {
-				start: startDate,
-				end: endDate
-			},
-			timestamp: Timestamp.fromDate(new Date())
-		};
-
-		addDoc(collection(db, 'requests'), data)
-			.then((docRef) => {
-				console.log('added document:', docRef.id, 'with data:', data);
-			})
-			.catch((error) => {
-				console.log('error', error.message);
-			});
+	async function geocode() {
+		const coords = `${instrumentData?._geoloc.lng},${instrumentData?._geoloc.lat}`;
+		const response = await fetch('/api/mapbox/reverse', {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify({ coords })
+		});
+		const data = await response.json();
+		location = data.features[0].place_name;
 	}
 </script>
 
 <AuthCheck>
-	{#if i}
-		<div class="flex flex-col items-center p-10">
-			<h2 class="text-2xl font-bold text-center p-2">{i.name}</h2>
+	{#if instrumentData}
+		<div class="flex flex-col justify-center gap-4 p-10">
+			<div class="flex flex-col items-center gap-6 p-8 max-w-3xl mx-auto">
+				<div class="flex gap-6">
+					<img src={instrumentData.imageURL} alt="instrument" class="max-w-md h-auto rounded-lg" />
 
-			<div class="flex p-2">
-				<img src={i.imageURL} alt="instrument" class="max-w-full max-h-[600px] object-cover" />
+					<div class="flex flex-col gap-2">
+						<div class="flex items-center gap-2">
+							<label for="name" class="label font-semibold">Name:</label>
+							<p id="name">{instrumentData.name}</p>
+						</div>
+
+						<div class="flex items-center gap-2">
+							<label for="price" class="label font-semibold">Price:</label>
+							<p id="price">{instrumentData.price}</p>
+						</div>
+
+						<div class="flex items-center gap-2">
+							<label for="owner" class="label font-semibold">Owner:</label>
+							<p id="owner">{instrumentData.owner}</p>
+						</div>
+
+						<div class="flex items-center gap-2">
+							<label for="available" class="label font-semibold">Available:</label>
+							<p id="available">{instrumentData.available}</p>
+						</div>
+
+						<div class="flex items-center gap-2">
+							<label for="condition" class="label font-semibold">Condition:</label>
+							<p id="condition">{instrumentData.condition}</p>
+						</div>
+
+						<div class="flex items-baseline gap-2">
+							<label for="description" class="label font-semibold">Description:</label>
+							<p id="description">{instrumentData.description}</p>
+						</div>
+
+						<div class="flex items-baseline gap-2">
+							<label for="location" class="label font-semibold">Location:</label>
+							<p id="location">{location}</p>
+						</div>
+					</div>
+				</div>
 			</div>
 
-			<p class="max-w-prose p-2">{i.description}</p>
-
-			{#each i.reviews as review}
-				<div>{review}</div>
-			{/each}
-
-			<div class="h-screen flex flex-col items-center">
+			<div class="flex flex-col items-center">
 				<h2 class="text-2xl font-bold text-center p-2">Rental Request</h2>
-				<form on:submit|preventDefault={handleSubmit}>
-					<div class="p-2">
-						<label>
-							Start
-							<input type="date" bind:value={startDate} min={today} required />
-						</label>
+
+				<form method="post" use:enhance>
+					<input type="hidden" name="uid" value={$user?.uid} />
+					<input type="hidden" name="ownerID" value={instrumentData?.ownerID} />
+
+					<div class="flex">
+						<div class="p-2">
+							<label class="font-semibold">
+								Start:
+								<input type="date" name="startDate" bind:value={startDate} min={today} required />
+							</label>
+						</div>
+
+						<div class="p-2">
+							<label class="font-semibold">
+								End:
+								<input type="date" name="endDate" min={startDate} required />
+							</label>
+						</div>
 					</div>
 
 					<div class="p-2">
-						<label>
-							End
-							<input type="date" bind:value={endDate} min={startDate} required />
+						<label class="font-semibold">
+							Message
+							<textarea
+								name="message"
+								value="Hello!"
+								class="textarea textarea-bordered w-full"
+								required
+							/>
 						</label>
 					</div>
-
 					<button class="btn btn-primary w-full">Submit</button>
+					{#if form?.success}
+						<p>Request Sent!</p>
+					{/if}
+					{#if form?.error}
+						<p>Error: {form.error}</p>
+					{/if}
 				</form>
 			</div>
 		</div>

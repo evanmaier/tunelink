@@ -6,6 +6,7 @@
 	import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 	import { longitude, latitude } from '$lib/stores/GeoStore.js';
 	import type { ActionData } from './$types';
+	import { enhance } from '$app/forms';
 
 	export let form: ActionData;
 
@@ -28,7 +29,7 @@
 	async function geocode() {
 		if (address) {
 			const location = `${$longitude},${$latitude}`;
-			const response = await fetch('/api/mapbox', {
+			const response = await fetch('/api/mapbox/forward', {
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json' },
 				body: JSON.stringify({ address, location })
@@ -52,7 +53,7 @@
 <AuthCheck>
 	<div class="h-screen flex flex-col items-center">
 		<h2 class="text-2xl font-bold text-center p-2">Add Instrument</h2>
-		<form method="post">
+		<form method="post" use:enhance>
 			<input type="hidden" name="uid" value={$user?.uid} />
 			<input type="hidden" name="lat" value={lat} />
 			<input type="hidden" name="lng" value={lng} />
