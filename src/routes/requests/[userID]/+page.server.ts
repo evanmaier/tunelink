@@ -24,6 +24,7 @@ export const load: PageServerLoad = async ({ params }) => {
 
 			return {
 				id: doc.id,
+				status: doc.get('status') as string,
 				imageURL: instrumentDoc.get('imageURL') as string,
 				message: lastMessage?.get('message') || '',
 				date: lastMessage?.get('timestamp').toDate()
@@ -34,6 +35,8 @@ export const load: PageServerLoad = async ({ params }) => {
 	requestData.sort((a, b) => b.date - a.date);
 
 	return {
-		requests: requestData
+		pending: requestData.filter((data) => data.status == 'pending'),
+		accepted: requestData.filter((data) => data.status == 'accepted'),
+		declined: requestData.filter((data) => data.status == 'declined')
 	};
 };

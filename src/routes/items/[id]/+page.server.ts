@@ -13,6 +13,7 @@ export const actions = {
 
 		try {
 			const requestRef = await adminDB.collection('requests').add({
+				status: 'pending',
 				instrumentID: params.id,
 				ownerID: ownerID,
 				renterID: uid,

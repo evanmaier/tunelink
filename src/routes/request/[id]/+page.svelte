@@ -2,7 +2,16 @@
 	import type { PageData } from './$types';
 	import { user } from '$lib/stores/AuthStore';
 	import { writable } from 'svelte/store';
-	import { collection, onSnapshot, orderBy, query, Timestamp, addDoc } from 'firebase/firestore';
+	import {
+		collection,
+		onSnapshot,
+		orderBy,
+		query,
+		Timestamp,
+		addDoc,
+		doc,
+		updateDoc
+	} from 'firebase/firestore';
 	import { db } from '$lib/firebase';
 	import { page } from '$app/stores';
 	import { onMount } from 'svelte';
@@ -41,13 +50,13 @@
 	}
 
 	async function acceptRequest() {
-		// mark request as accepted, send notification to renter
-		// perhaps this should archive the request
+		const requestRef = doc(db, 'requests', $page.params.id);
+		await updateDoc(requestRef, { status: 'accepted' });
 	}
 
 	async function rejectRequest() {
-		// mark request as rejected, send notification to renter
-		// perhaps this should archive or delete the request
+		const requestRef = doc(db, 'requests', $page.params.id);
+		await updateDoc(requestRef, { status: 'declined' });
 	}
 </script>
 
