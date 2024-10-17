@@ -17,10 +17,8 @@
 
 	async function handleSignUp(email: string, password: string, username: string) {
 		try {
-			await createUserWithEmailAndPassword(auth, email, password);
-			if (auth.currentUser) {
-				await updateProfile(auth.currentUser, { displayName: username });
-			}
+			const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+			await updateProfile(userCredential.user, { displayName: username });
 			console.log('register success');
 			goto('/');
 		} catch (error: any) {
