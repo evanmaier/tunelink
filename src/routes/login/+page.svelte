@@ -5,13 +5,18 @@
 	import { goto } from '$app/navigation';
 
 	async function handleSignIn(email: string, password: string) {
-		signInWithEmailAndPassword(auth, email, password)
-			.then(() => {
-				goto('/');
-			})
-			.catch((error) => {
-				$message = error.message;
-			});
+		const credential = await signInWithEmailAndPassword(auth, email, password);
+		const idToken = await credential.user.getIdToken();
+
+		await fetch('/api/auth', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify({ idToken })
+		});
+
+		goto('/');
 	}
 
 	export let data;

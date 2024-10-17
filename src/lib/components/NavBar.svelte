@@ -5,13 +5,13 @@
 	import { signOut } from 'firebase/auth';
 
 	async function logOut() {
-		signOut(auth)
-			.then(() => {
-				invalidateAll();
-			})
-			.catch((error) => {
-				console.log(error.message);
-			});
+		try {
+			await signOut(auth);
+			await fetch('/api/auth', { method: 'DELETE' });
+			invalidateAll();
+		} catch (error: any) {
+			console.log(error.message);
+		}
 	}
 </script>
 
