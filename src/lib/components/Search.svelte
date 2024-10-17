@@ -84,8 +84,8 @@
 	<label for="radius" class="label-text p-2">Search Radius (km)</label>
 	<input
 		type="range"
-		min="0"
-		max="100"
+		min="1"
+		max="101"
 		id="radius"
 		bind:value={radius}
 		on:change={localSearch}
@@ -93,7 +93,7 @@
 		step="25"
 	/>
 	<div class="flex w-full justify-between px-2 text-xs">
-		<span>0</span>
+		<span>1</span>
 		<span>|</span>
 		<span>|</span>
 		<span>|</span>
