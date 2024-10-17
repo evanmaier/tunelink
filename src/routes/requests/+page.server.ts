@@ -1,11 +1,11 @@
 import { adminDB } from '$lib/server/admin';
 import type { PageServerLoad } from './$types';
 
-export const load: PageServerLoad = async ({ params }) => {
+export const load: PageServerLoad = async ({ locals }) => {
 	const requestsRef = adminDB.collection('requests');
 
-	const sentRequests = await requestsRef.where('renterID', '==', params.userID).get();
-	const receivedRequests = await requestsRef.where('ownerID', '==', params.userID).get();
+	const sentRequests = await requestsRef.where('renterID', '==', locals.userID).get();
+	const receivedRequests = await requestsRef.where('ownerID', '==', locals.userID).get();
 
 	const allDocs = [...sentRequests.docs, ...receivedRequests.docs];
 

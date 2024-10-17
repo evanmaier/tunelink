@@ -31,7 +31,7 @@
 				<a href="/yourInstruments" class="btn btn-ghost">Your Instruments</a>
 			</li>
 			<li>
-				<a href="/requests/{$user.uid}" class="btn btn-ghost">Rental Requests</a>
+				<a href="/requests" class="btn btn-ghost">Rental Requests</a>
 			</li>
 			<li>
 				<button on:click={logOut} class="btn btn-primary text-white">Sign Out</button>
