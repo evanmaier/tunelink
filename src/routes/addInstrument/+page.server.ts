@@ -28,14 +28,7 @@ export const actions: Actions = {
 		console.log(instrument);
 
 		try {
-			const instrumentRef = await adminDB.collection('instruments').add(instrument);
-			const userRef = adminDB.collection('users').doc(uid);
-			const userDoc = await userRef.get();
-			if (userDoc.exists) {
-				let userInstruments = userDoc.data()?.instruments;
-				userInstruments.push(instrumentRef.id);
-				await userRef.update({ instruments: userInstruments });
-			}
+			await adminDB.collection('instruments').add(instrument);
 		} catch (error: any) {
 			return fail(400, { error: error.message });
 		}

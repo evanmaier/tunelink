@@ -1,7 +1,8 @@
-import { fail, type Actions } from '@sveltejs/kit';
+import { fail, redirect, type Actions } from '@sveltejs/kit';
 import { zod } from 'sveltekit-superforms/adapters';
 import { superValidate } from 'sveltekit-superforms';
 import { registerSchema } from '$lib/components/Schemas';
+import { adminAuth } from '$lib/server/admin';
 
 export const load = async () => {
 	const form = await superValidate(zod(registerSchema));

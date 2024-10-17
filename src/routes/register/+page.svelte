@@ -1,81 +1,12 @@
 <script lang="ts">
-	import { createUserWithEmailAndPassword, type User } from 'firebase/auth';
-	import { superForm, setError } from 'sveltekit-superforms';
+	import { superForm } from 'sveltekit-superforms';
 	import { auth } from '$lib/firebase';
+	import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 	import { goto } from '$app/navigation';
-	import { db } from '$lib/firebase';
-	import { doc, getDoc, setDoc } from 'firebase/firestore';
-
-	async function isAvailable(username: string) {
-		try {
-			console.log('checking username', username);
-			const ref = doc(db, 'usernames', username);
-			const exists = await getDoc(ref).then((doc) => doc.exists());
-			return !exists;
-		} catch (error) {
-			console.log('error checking username availability', error);
-		}
-	}
-
-	async function createUsername(user: User, username: string) {
-		try {
-			console.log('creating username', username);
-			const usernamesDocRef = doc(db, 'usernames', username);
-			await setDoc(usernamesDocRef, {
-				uid: user.uid
-			});
-		} catch (error) {
-			console.log('error creating username', error);
-		}
-	}
-
-	async function createUser(user: User, username: string) {
-		try {
-			console.log('creating user', user.uid);
-			const userDocRef = doc(db, 'users', user.uid);
-			const instruments: Array<string> = [];
-			await setDoc(userDocRef, {
-				email: user.email,
-				username: username,
-				instruments: instruments
-			});
-		} catch (error) {
-			console.log('error creating user', error);
-		}
-	}
-
-	async function handleSignUp(email: string, password: string, username: string) {
-		createUserWithEmailAndPassword(auth, email, password)
-			.then((userCredential) => {
-				createUser(userCredential.user, username);
-				return userCredential;
-			})
-			.then((userCredential) => {
-				createUsername(userCredential.user, username);
-				return username;
-			})
-			.then(() => {
-				console.log('register success');
-				goto('/');
-			})
-			.catch((error) => {
-				console.log('error:', error);
-				$message = error.message;
-			});
-	}
 
 	export let data;
-	const { form, errors, constraints, message, enhance } = superForm(data.form, {
-		async onUpdate({ form }) {
-			if (form.valid) {
-				const available = await isAvailable(form.data.username);
-				if (!available) {
-					setError(form, 'username', 'username is not available');
-					form.valid = false;
-				}
-			}
-		},
 
+	const { form, errors, constraints, message, enhance } = superForm(data.form, {
 		onUpdated({ form }) {
 			if (form.valid) {
 				console.log('register user', form.data.email);
@@ -83,6 +14,17 @@
 			}
 		}
 	});
+
+	async function handleSignUp(email: string, password: string, username: string) {
+		try {
+			const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+			await updateProfile(userCredential.user, { displayName: username });
+			console.log('register success');
+			goto('/');
+		} catch (error: any) {
+			console.log(error.message);
+		}
+	}
 </script>
 
 <div class="flex justify-center items-center min-h-screen">
