@@ -1,45 +1,50 @@
 <script lang="ts">
-	import { userData } from '$lib/stores/DocStore';
 	import { user } from '$lib/stores/AuthStore';
 	import {
-		doc,
-		getDoc,
+		onSnapshot,
 		deleteDoc,
-		updateDoc,
-		type DocumentData,
+		query,
+		collection,
+		where,
 		type DocumentReference
 	} from 'firebase/firestore';
 	import AuthCheck from '$lib/components/AuthCheck.svelte';
 	import { db } from '$lib/firebase';
 	import { goto } from '$app/navigation';
+	import { onDestroy, onMount } from 'svelte';
+	import { writable } from 'svelte/store';
 
-	// get the user's instrument objects
-	let iPromise: Promise<Map<DocumentReference, DocumentData>>;
-	$: if ($userData?.instruments) {
-		iPromise = getInstruments($userData.instruments);
+	interface Item {
+		name: string;
+		imageURL: string;
+		ref: DocumentReference;
 	}
+	const instruments = writable<Item[]>([]);
 
-	async function getInstruments(ids: Array<string>) {
-		let iMap: Map<DocumentReference, DocumentData> = new Map();
-		for (const id of ids) {
-			const ref = doc(db, 'instruments', id);
-			const snap = await getDoc(ref);
-			if (snap.exists()) {
-				iMap.set(ref, snap.data());
-			}
-		}
-		return iMap;
+	const instrumentRef = collection(db, 'instruments');
+
+	$: if ($user?.uid) {
+		const q = query(instrumentRef, where('owner', '==', $user?.uid));
+		const unsubscribe = onSnapshot(q, (qSnapshot) => {
+			instruments.set(
+				qSnapshot.docs.map((doc) => {
+					return {
+						name: doc.get('name'),
+						imageURL: doc.get('imageURL'),
+						ref: doc.ref
+					};
+				})
+			);
+		});
+		onDestroy(() => unsubscribe());
 	}
 
 	async function deleteInstrument(iRef: DocumentReference) {
-		await deleteDoc(iRef);
-		// update instruments array in user document
-		if ($user && $userData?.instruments) {
-			const userRef = doc(db, 'users', $user?.uid);
-			const i = $userData?.instruments.filter((id) => iRef.id != id);
-			await updateDoc(userRef, {
-				instruments: i
-			});
+		try {
+			await deleteDoc(iRef);
+			console.log('instrument deleted');
+		} catch (error: any) {
+			console.log(error.message);
 		}
 	}
 
@@ -49,26 +54,17 @@
 </script>
 
 <AuthCheck>
-	{#await iPromise}
-		<p>Loading Instruments...</p>
-	{:then iMap}
-		<h2 class="text-2xl font-bold text-center">Your Instruments</h2>
-		<div class="flex flex-col p-4 justify-center items-center">
-			{#each [...(iMap || [])] as [ref, iData]}
-				{#if iData}
-					<div class="flex flex-col w-96 p-4">
-						<h3 class="text-bold text-xl text-center p-4">{iData.name}</h3>
-						<img
-							src={iData.imageURL}
-							alt="instrument"
-							class="max-w-full max-h-[400px] object-cover"
-						/>
-						<button on:click={() => gotoEdit(ref.id)} class="btn btn-primary mt-2">Edit</button>
-						<button on:click={() => deleteInstrument(ref)} class="btn btn-error mt-2">Delete</button
-						>
-					</div>
-				{/if}
-			{/each}
-		</div>
-	{/await}
+	<h2 class="text-2xl font-bold text-center">Your Instruments</h2>
+	<div class="flex flex-col p-4 justify-center items-center">
+		{#each $instruments as item}
+			<div class="flex flex-col w-96 p-4">
+				<h3 class="text-bold text-xl text-center p-4">{item.name}</h3>
+				<img src={item.imageURL} alt="instrument" class="max-w-full max-h-[400px] object-cover" />
+				<button on:click={() => gotoEdit(item.ref.id)} class="btn btn-primary mt-2">Edit</button>
+				<button on:click={() => deleteInstrument(item.ref)} class="btn btn-error mt-2"
+					>Delete</button
+				>
+			</div>
+		{/each}
+	</div>
 </AuthCheck>
