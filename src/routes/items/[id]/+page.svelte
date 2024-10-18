@@ -39,7 +39,7 @@
 		<div class="flex flex-col justify-center gap-4 p-10">
 			<div class="flex flex-col items-center gap-6 p-8 max-w-3xl mx-auto">
 				<div class="flex gap-6">
-					<img src={instrumentData.imageURL} alt="instrument" class="max-w-md h-auto rounded-lg" />
+					<img src={instrumentData.imageURL} alt="instrument" class="object-contain rounded-lg" />
 
 					<div class="flex flex-col gap-2">
 						<div class="flex items-center gap-2">

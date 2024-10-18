@@ -6,7 +6,7 @@
 	export let data: PageData;
 
 	function gotoRequest(id: string) {
-		goto(`/request/${id}`);
+		goto(`requests/request/${id}`);
 	}
 </script>
 

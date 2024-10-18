@@ -71,10 +71,10 @@
 </script>
 
 <AuthCheck>
-	<div class="grid grid-cols-2 p-4">
-		<div class="flex flex-col items-center max-w-xl mx-auto">
-			<img src={data.imageURL} class="rounded-lg" alt="instrument" />
+	<div class="flex flex-col p-4 items-center h-[85vh]">
+		<div class="flex flex-col items-center max-w-3xl w-full mx-auto p-2">
 			<div class="flex gap-3 m-2">
+				<img src={data.imageURL} class="h-20 w-20 object-cover rounded-lg" alt="instrument" />
 				<div class="flex flex-col">
 					<h3 class="text-lg font-semibold">Status</h3>
 					<p>{status}</p>
@@ -103,8 +103,8 @@
 			</div>
 		</div>
 
-		<div class="flex flex-col gap-4 max-w-xl">
-			<div class="flex flex-col border border-gray-500 rounded-lg max-h-svh">
+		<div class="flex flex-col gap-4 max-w-2xl w-full grow overflow-hidden">
+			<div class="flex flex-col border border-gray-500 rounded-lg overflow-y-auto grow">
 				{#each $messages as message}
 					{#if message.senderID == $user?.uid}
 						<div class="flex justify-end p-2">
