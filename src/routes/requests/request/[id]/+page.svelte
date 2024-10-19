@@ -14,7 +14,7 @@
 	} from 'firebase/firestore';
 	import { db } from '$lib/firebase';
 	import { page } from '$app/stores';
-	import { onMount } from 'svelte';
+	import { afterUpdate, onMount } from 'svelte';
 	import AuthCheck from '$lib/components/AuthCheck.svelte';
 
 	export let data: PageData;
@@ -27,6 +27,7 @@
 
 	let newMessage = '';
 	let status = '';
+	let lastMessage: HTMLDivElement | null;
 
 	const messages = writable<Message[]>([]);
 	const messagesRef = collection(db, `requests/${$page.params.id}/messages`);
@@ -68,6 +69,12 @@
 	async function rejectRequest() {
 		await updateDoc(requestRef, { status: 'declined' });
 	}
+
+	afterUpdate(() => {
+		if (lastMessage && $messages) {
+			lastMessage.scrollIntoView();
+		}
+	});
 </script>
 
 <AuthCheck>
@@ -105,16 +112,29 @@
 
 		<div class="flex flex-col gap-4 max-w-2xl w-full grow overflow-hidden">
 			<div class="flex flex-col border border-gray-500 rounded-lg overflow-y-auto grow">
-				{#each $messages as message}
-					{#if message.senderID == $user?.uid}
-						<div class="flex justify-end p-2">
-							<p class="max-w-xs rounded-md p-2 text-white bg-blue-500">
+				{#each $messages as message, i}
+					{#if i == $messages.length - 1}
+						<div
+							class="flex p-2 {message.senderID == $user?.uid ? 'justify-end' : 'justify-start'}"
+							bind:this={lastMessage}
+						>
+							<p
+								class="max-w-xs rounded-md p-2 text-white {message.senderID == $user?.uid
+									? 'bg-blue-500'
+									: 'bg-gray-500'}"
+							>
 								{message.message}
 							</p>
 						</div>
 					{:else}
-						<div class="flex justify-start p-2">
-							<p class="max-w-xs rounded-md p-2 text-white bg-gray-500">
+						<div
+							class="flex p-2 {message.senderID == $user?.uid ? 'justify-end' : 'justify-start'}"
+						>
+							<p
+								class="max-w-xs rounded-md p-2 text-white {message.senderID == $user?.uid
+									? 'bg-blue-500'
+									: 'bg-gray-500'}"
+							>
 								{message.message}
 							</p>
 						</div>
