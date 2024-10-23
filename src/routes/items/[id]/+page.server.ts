@@ -1,6 +1,17 @@
 import { adminDB } from '$lib/server/admin';
 import { FieldValue } from 'firebase-admin/firestore';
 import { fail } from '@sveltejs/kit';
+import type { PageServerLoad } from './$types';
+
+export const load: PageServerLoad = async ({ locals }) => {
+	const ref = adminDB.collection('requests');
+	const sent = await ref.where('renterID', '==', locals.userID).get();
+	if (sent.empty) {
+		return { existingRequest: false };
+	} else {
+		return { existingRequest: true };
+	}
+};
 
 export const actions = {
 	default: async ({ request, params }) => {
