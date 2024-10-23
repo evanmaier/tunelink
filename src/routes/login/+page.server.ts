@@ -1,21 +1,32 @@
 import { fail, type Actions } from '@sveltejs/kit';
 import { zod } from 'sveltekit-superforms/adapters';
 import { superValidate } from 'sveltekit-superforms';
-import { loginSchema } from '$lib/components/Schemas';
+import { loginSchema, registerSchema } from '$lib/components/Schemas';
 
 export const load = async () => {
-	const form = await superValidate(zod(loginSchema));
-	return { form };
+	const loginForm = await superValidate(zod(loginSchema));
+	const registerForm = await superValidate(zod(registerSchema));
+
+	return { loginForm, registerForm };
 };
 
 export const actions: Actions = {
-	default: async ({ request }) => {
-		const form = await superValidate(request, zod(loginSchema));
+	login: async ({ request }) => {
+		const loginForm = await superValidate(request, zod(loginSchema));
 
-		if (!form.valid) {
-			return fail(400, { form });
+		if (!loginForm.valid) {
+			return fail(400, { loginForm });
 		}
 
-		return { form };
+		return { loginForm };
+	},
+	register: async ({ request }) => {
+		const registerForm = await superValidate(request, zod(registerSchema));
+
+		if (!registerForm.valid) {
+			return fail(400, { registerForm });
+		}
+
+		return { registerForm };
 	}
 };
