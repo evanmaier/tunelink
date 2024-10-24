@@ -1,96 +1,86 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
 	import AuthCheck from '$lib/components/AuthCheck.svelte';
-	import { user } from '$lib/stores/AuthStore';
 	import { onMount } from 'svelte';
 	import type { ActionData, PageData } from './$types';
-	import { db } from '$lib/firebase';
-	import { page } from '$app/stores';
-	import { doc, getDoc, type DocumentData } from 'firebase/firestore';
 
 	export let data: PageData;
 	export let form: ActionData;
+
 	const today = new Date().toISOString().split('T')[0];
 	let startDate: string;
 	let location = '';
 
-	const instrumentRef = doc(db, 'instruments', $page.params.id);
-	let instrumentData: DocumentData | undefined;
-
 	onMount(async () => {
-		const instrumentSnap = await getDoc(instrumentRef);
-		instrumentData = instrumentSnap.data();
-		geocode();
-	});
+		if (!data.instrument) return;
 
-	async function geocode() {
-		const coords = `${instrumentData?._geoloc.lng},${instrumentData?._geoloc.lat}`;
+		const coords = `${data.instrument._geoloc.lng},${data.instrument._geoloc.lat}`;
+		
 		const response = await fetch('/api/mapbox/reverse', {
 			method: 'POST',
 			headers: { 'Content-Type': 'application/json' },
 			body: JSON.stringify({ coords })
 		});
-		const data = await response.json();
-		location = data.features[0].place_name;
-	}
+		
+		const res = await response.json();
+		location = res.features[0].place_name;
+	});
 </script>
 
 <AuthCheck>
-	{#if instrumentData}
+	{#if data.instrument}
 		<div class="flex flex-col justify-center gap-4 p-10">
 			<div class="flex flex-col items-center gap-6 p-8 max-w-3xl mx-auto">
-				<div class="flex gap-6">
-					<img src={instrumentData.imageURL} alt="instrument" class="object-contain rounded-lg" />
+				<h2 class="text-2xl font-bold text-center p-2">{data.instrument.name}</h2>
+
+				<div class="flex gap-6 max-w-2xl">
+					<img src={data.instrument.imageURL} alt="instrument" class=" max-w-sm object-contain rounded-lg" />
 
 					<div class="flex flex-col gap-2">
-						<div class="flex items-center gap-2">
-							<label for="name" class="label font-semibold">Name:</label>
-							<p id="name">{instrumentData.name}</p>
+						<div class="flex flex-col">
+							<label for="price" class="text-lg font-semibold">Price</label>
+							<p id="price">$ {data.instrument.price}</p>
 						</div>
 
-						<div class="flex items-center gap-2">
-							<label for="price" class="label font-semibold">Price:</label>
-							<p id="price">{instrumentData.price}</p>
+						{#if data.ownerName}
+							<div class="flex flex-col">
+								<label for="owner" class="text-lg font-semibold">Owner</label>
+								<p id="owner">{data.ownerName}</p>
+							</div>
+						{/if}
+						
+						<div class="flex flex-col">
+							<label for="available" class="text-lg font-semibold">Available</label>
+							<p id="available">{data.instrument.available}</p>
 						</div>
 
-						<div class="flex items-center gap-2">
-							<label for="owner" class="label font-semibold">Owner:</label>
-							<p id="owner">{instrumentData.owner}</p>
+						<div class="flex flex-col">
+							<label for="condition" class="text-lg font-semibold">Condition</label>
+							<p id="condition">{data.instrument.condition}</p>
 						</div>
 
-						<div class="flex items-center gap-2">
-							<label for="available" class="label font-semibold">Available:</label>
-							<p id="available">{instrumentData.available}</p>
+						<div class="flex flex-col">
+							<label for="description" class="text-lg font-semibold">Description</label>
+							<p id="description" class="max-w-sm">{data.instrument.description}</p>
 						</div>
 
-						<div class="flex items-center gap-2">
-							<label for="condition" class="label font-semibold">Condition:</label>
-							<p id="condition">{instrumentData.condition}</p>
-						</div>
-
-						<div class="flex items-baseline gap-2">
-							<label for="description" class="label font-semibold">Description:</label>
-							<p id="description">{instrumentData.description}</p>
-						</div>
-
-						<div class="flex items-baseline gap-2">
-							<label for="location" class="label font-semibold">Location:</label>
-							<p id="location">{location}</p>
+						<div class="flex flex-col">
+							<label for="location" class="text-lg font-semibold">Location</label>
+							<p id="location" class="max-w-sm">{location}</p>
 						</div>
 					</div>
 				</div>
 			</div>
-			{#if !instrumentData.available}
-				<h2 class="text-2xl font-bold text-center p-2">Instrument in not currently available</h2>
+			{#if !data.instrument.available}
+				<h3 class="text-xl font-bold text-center p-2">Instrument in not currently available</h3>
 			{:else if data.existingRequest}
-				<h2 class="text-2xl font-bold text-center p-2">Existing request is currently active</h2>
+				<h3 class="text-xl font-bold text-center p-2">Existing request is currently active</h3>
 			{:else}
 				<div class="flex flex-col items-center">
 					<h2 class="text-2xl font-bold text-center p-2">Rental Request</h2>
 
 					<form method="post" use:enhance>
-						<input type="hidden" name="uid" value={$user?.uid} />
-						<input type="hidden" name="ownerID" value={instrumentData?.ownerID} />
+						<input type="hidden" name="ownerID" value={data.instrument?.ownerID} />
 
 						<div class="flex">
 							<div class="p-2">
