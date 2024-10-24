@@ -1,7 +1,6 @@
 import type { Actions } from './$types';
 import { adminDB } from '$lib/server/admin';
 import { fail, redirect } from '@sveltejs/kit';
-import { FieldValue } from 'firebase-admin/firestore';
 
 export const actions = {
 	default: async ({ request }) => {
