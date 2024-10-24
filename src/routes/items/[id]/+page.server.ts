@@ -28,7 +28,6 @@ export const actions = {
 				instrumentID: params.id,
 				ownerID: ownerID,
 				renterID: uid,
-				timestamp: FieldValue.serverTimestamp(),
 				Dates: {
 					start: startDate,
 					end: endDate

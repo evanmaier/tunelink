@@ -13,7 +13,6 @@ export const actions: Actions = {
 			available: available == 'on',
 			category: data.get('category') as string,
 			condition: data.get('condition') as string,
-			timestamp: FieldValue.serverTimestamp(),
 			description: data.get('description') as string,
 			_geoloc: {
 				lat: Number(data.get('lat') as string),

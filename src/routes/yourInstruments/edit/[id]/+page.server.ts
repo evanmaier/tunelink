@@ -21,7 +21,6 @@ export const actions = {
 				price: parseInt(price),
 				condition,
 				description,
-				timestamp: FieldValue.serverTimestamp()
 			});
 		} catch (error: any) {
 			return fail(400, { error: error.message });
