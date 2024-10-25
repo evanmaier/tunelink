@@ -12,7 +12,7 @@ export const actions: Actions = {
 			} catch (error: any) {
 				return fail(400, { error: error.message });
 			}
-			return { success: true };
+			return { success: true, username: username };
 		}
 		return fail(400, { error: 'missing userID' });
 	},
