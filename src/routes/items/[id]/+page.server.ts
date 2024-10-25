@@ -10,12 +10,12 @@ export const load: PageServerLoad = async ({ locals, params }) => {
 	const docData = docSnap.data();
 
 	const owner = await adminAuth.getUser(docData?.owner);
-	
+
 	return {
 		instrument: docData,
 		existingRequest: !sent.empty,
 		ownerName: owner.displayName
-	}
+	};
 };
 
 export const actions = {

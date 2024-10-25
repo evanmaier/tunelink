@@ -19,7 +19,7 @@ export const actions = {
 				name,
 				price: parseInt(price),
 				condition,
-				description,
+				description
 			});
 		} catch (error: any) {
 			return fail(400, { error: error.message });

@@ -94,7 +94,6 @@
 		</form>
 	</div>
 
-
 	<div class="w-full max-w-sm text-center">
 		<form method="POST" action="?/register" use:registerEnhance class="flex flex-col">
 			{#if $registerMessage}<span>{$registerMessage}</span>{/if}
@@ -147,4 +146,3 @@
 		</form>
 	</div>
 </div>
-

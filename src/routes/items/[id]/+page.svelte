@@ -15,13 +15,13 @@
 		if (!data.instrument) return;
 
 		const coords = `${data.instrument._geoloc.lng},${data.instrument._geoloc.lat}`;
-		
+
 		const response = await fetch('/api/mapbox/reverse', {
 			method: 'POST',
 			headers: { 'Content-Type': 'application/json' },
 			body: JSON.stringify({ coords })
 		});
-		
+
 		const res = await response.json();
 		location = res.features[0].place_name;
 	});
@@ -34,7 +34,11 @@
 				<h2 class="text-2xl font-bold text-center p-2">{data.instrument.name}</h2>
 
 				<div class="flex gap-6 max-w-2xl">
-					<img src={data.instrument.imageURL} alt="instrument" class=" max-w-sm object-contain rounded-lg" />
+					<img
+						src={data.instrument.imageURL}
+						alt="instrument"
+						class=" max-w-sm object-contain rounded-lg"
+					/>
 
 					<div class="flex flex-col gap-2">
 						<div class="flex flex-col">
@@ -48,7 +52,7 @@
 								<p id="owner">{data.ownerName}</p>
 							</div>
 						{/if}
-						
+
 						<div class="flex flex-col">
 							<label for="available" class="text-lg font-semibold">Available</label>
 							<p id="available">{data.instrument.available}</p>
