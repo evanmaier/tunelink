@@ -13,14 +13,17 @@
 	let localHits: any[] = [];
 	let radius = 50;
 
-	onMount(async () => {
+	onMount(() => {
 		client = algoliasearch('1E1MHC45I5', 'af24678105793bd1e288cfb617b53e2d');
 		index = client.initIndex('instruments');
-		localSearch();
 	});
 
+	$: if ($latitude && $longitude && index) {
+		localSearch();
+	}
+
 	async function userSearch() {
-		await index
+		index
 			.search(query, {
 				filters: `NOT owner:${$user?.uid}`,
 				hitsPerPage: 3,
@@ -35,7 +38,7 @@
 	}
 
 	async function localSearch() {
-		await index
+		index
 			.search('', {
 				filters: `NOT owner:${$user?.uid}`,
 				aroundRadius: radius * 1000,
