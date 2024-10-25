@@ -37,7 +37,12 @@
 				<button on:click={logOut} class="btn btn-primary text-white">Sign Out</button>
 			</li>
 		{:else}
-			<a href="/login" class="btn btn-primary text-white">Sign In</a>
+			<li>
+				<a href="/" class="btn btn-ghost">Home</a>
+			</li>
+			<li>
+				<a href="/login" class="btn btn-primary text-white">Sign In</a>
+			</li>
 		{/if}
 	</ul>
 </nav>
