@@ -1,14 +1,12 @@
 <script lang="ts">
-	import { enhance } from '$app/forms';
 	import { onMount } from 'svelte';
-	import type { ActionData, PageData } from './$types';
+	import type { PageData } from './$types';
 	import { user } from '$lib/stores/AuthStore';
+	import { goto } from '$app/navigation';
+	import { page } from '$app/stores';
 
 	export let data: PageData;
-	export let form: ActionData;
-
-	const today = new Date().toISOString().split('T')[0];
-	let startDate: string;
+	
 	let location = '';
 
 	onMount(async () => {
@@ -39,7 +37,7 @@
 					class=" max-w-sm object-contain rounded-lg"
 				/>
 
-				<div class="flex flex-col gap-2">
+				<div class="flex flex-col gap-4">
 					<div class="flex flex-col">
 						<label for="price" class="text-lg font-semibold">Price</label>
 						<p id="price">$ {data.instrument.price}</p>
@@ -71,56 +69,19 @@
 						<label for="location" class="text-lg font-semibold">Location</label>
 						<p id="location" class="max-w-sm">{location}</p>
 					</div>
+					
+					<div class="flex justify-start">
+						{#if !data.instrument.available}
+						<h3 class="text-xl font-bold">Instrument Not Available</h3>
+						{:else if data.existingRequest}
+							<h3 class="text-xl font-bold">Existing Request Is Active</h3>
+						{:else if $user}
+							<button class="btn btn-primary w-full" on:click={() => goto(`/requests/new/${$page.params.id}`)}>Request Rental</button>
+						{/if}
+					</div>
 				</div>
 			</div>
 		</div>
-		{#if !data.instrument.available}
-			<h3 class="text-xl font-bold text-center p-2">Instrument in not currently available</h3>
-		{:else if data.existingRequest}
-			<h3 class="text-xl font-bold text-center p-2">Existing request is currently active</h3>
-		{:else if $user}
-			<div class="flex flex-col items-center">
-				<h2 class="text-2xl font-bold text-center p-2">Rental Request</h2>
-
-				<form method="post" use:enhance>
-					<input type="hidden" name="ownerID" value={data.instrument?.ownerID} />
-
-					<div class="flex">
-						<div class="p-2">
-							<label class="font-semibold">
-								Start:
-								<input type="date" name="startDate" bind:value={startDate} min={today} required />
-							</label>
-						</div>
-
-						<div class="p-2">
-							<label class="font-semibold">
-								End:
-								<input type="date" name="endDate" min={startDate} required />
-							</label>
-						</div>
-					</div>
-
-					<div class="p-2">
-						<label class="font-semibold">
-							Message
-							<textarea
-								name="message"
-								value="Hello!"
-								class="textarea textarea-bordered w-full"
-								required
-							/>
-						</label>
-					</div>
-					<button class="btn btn-primary w-full">Submit</button>
-					{#if form?.success}
-						<p>Request Sent!</p>
-					{/if}
-					{#if form?.error}
-						<p>Error: {form.error}</p>
-					{/if}
-				</form>
-			</div>
-		{/if}
+		
 	</div>
 {/if}
