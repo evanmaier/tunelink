@@ -35,3 +35,9 @@ Another possible buisiness model is the marketplace approach. This would positio
 ### The Dilema
 
 My goal with this project is to make music gear more accessible for everyone, and to find a use for all those guitars collecting dust in garages. For that reason, I want to make this work as a peer-to-peer platform. However, it would be a lot easier to build a buisiness to consumer platform marketed at local music stores that dont have a strong online presence. My hope is that we can combine both these models and become a successfull buisiness while still serving the local musician.
+
+## Client vs Server
+
+10/25/2024
+
+One of the design decisions I seem to be making over and over again is what logic to run on the server and what should be run on the client. The existence of the firebase admin sdk (Node.js) and the web sdk (js) allow many operations to exist on either the client or the server. Initially I did everying on the client because it was easier to understand, however it quickly became obvoius this was not practical, with page.svelte files becoming too large and complicated. Once cookie based authentication was implemented on the server, it became much easier to offload more data loading and form handling to the server. Now, the general rule I follow is static and sensitive data should be loaded on the server, while public reactive data can be accessed directly on the client. This avoids abusing onMount and the litany of problems that come with that approach. It also allows us to leverage page server load and form actions, which are great sveltekit features.
