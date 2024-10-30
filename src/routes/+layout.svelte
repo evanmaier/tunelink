@@ -3,6 +3,9 @@
 	import NavBar from '$lib/components/NavBar.svelte';
 </script>
 
-<NavBar />
-
-<slot />
+<div class="min-h-screen flex flex-col">
+	<NavBar />
+	<main class="flex-1">
+		<slot />
+	</main>
+</div>

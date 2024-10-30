@@ -37,6 +37,8 @@ export const load: PageServerLoad = async ({ locals }) => {
 	return {
 		pending: requestData.filter((data) => data.status == 'pending'),
 		accepted: requestData.filter((data) => data.status == 'accepted'),
-		declined: requestData.filter((data) => data.status == 'declined')
+		declined: requestData.filter((data) => data.status == 'declined'),
+		active: requestData.filter((data) => data.status == 'active'),
+		complete: requestData.filter((data) => data.status == 'complete'),
 	};
 };
