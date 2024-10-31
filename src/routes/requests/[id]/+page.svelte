@@ -118,10 +118,11 @@
 				{#if data.ownerID == $user?.uid}
 					{#if status == 'pending'}
 						<button on:click={accept} class="btn btn-success"> Accept </button>
-						<button on:click={decline} class="btn btn-error"> Reject </button>
+						<button on:click={decline} class="btn btn-error"> Decline </button>
 					{/if}
 					{#if status == 'accepted'}
 						<button on:click={activate} class="btn btn-success"> Activate </button>
+						<button on:click={decline} class="btn btn-error"> Decline </button>
 					{/if}
 					{#if status == 'active'}
 						<button on:click={complete} class="btn btn-success"> Complete </button>
