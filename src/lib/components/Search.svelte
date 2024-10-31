@@ -53,10 +53,6 @@
 				console.error('Error performing local search:', error);
 			});
 	}
-
-	function gotoitem(hit: any) {
-		goto(`/items/${hit.objectID}`);
-	}
 </script>
 
 <div class="mb-4 w-4/12">
@@ -72,7 +68,7 @@
 
 <div class="grid grid-cols-1 gap-2 max-w-xs">
 	{#each searchHits as hit}
-		<button on:click={() => gotoitem(hit)} class="rounded-lg p-2 shadow-md w-full text-left">
+		<button on:click={() => goto(`/items/${hit.objectID}`)} class="rounded-lg p-2 shadow-md w-full text-left">
 			<div class="flex items-center">
 				<img src={hit.imageURL} alt="pic" class="h-20 w-20 object-cover rounded-md mr-4" />
 				<p class="text-lg font-semibold">{hit.name}</p>
@@ -106,7 +102,7 @@
 
 <div class="grid grid-flow-col auto-cols-max gap-2">
 	{#each localHits as hit}
-		<button on:click={() => gotoitem(hit)} class="rounded-lg p-2 shadow-md w-full text-left">
+		<button on:click={() => goto(`/items/${hit.objectID}`)} class="rounded-lg p-2 shadow-md w-full text-left">
 			<div class="flex flex-col items-center">
 				<h3 class="text-lg font-semibold">{hit.name}</h3>
 				<img src={hit.imageURL} alt="pic" class="h-96 w-96 object-cover rounded-md mr-4" />
