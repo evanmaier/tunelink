@@ -6,7 +6,7 @@
 	import { page } from '$app/stores';
 
 	export let data: PageData;
-	
+
 	let location = '';
 
 	onMount(async () => {
@@ -69,19 +69,21 @@
 						<label for="location" class="text-lg font-semibold">Location</label>
 						<p id="location" class="max-w-sm">{location}</p>
 					</div>
-					
+
 					<div class="flex justify-start">
 						{#if !data.instrument.available}
-						<h3 class="text-xl font-bold">Instrument Not Available</h3>
+							<h3 class="text-xl font-bold">Instrument Not Available</h3>
 						{:else if data.existingRequest}
 							<h3 class="text-xl font-bold">Existing Request Is Active</h3>
 						{:else if $user}
-							<button class="btn btn-primary w-full" on:click={() => goto(`/requests/new/${$page.params.id}`)}>Request Rental</button>
+							<button
+								class="btn btn-primary w-full"
+								on:click={() => goto(`/requests/new/${$page.params.id}`)}>Request Rental</button
+							>
 						{/if}
 					</div>
 				</div>
 			</div>
 		</div>
-		
 	</div>
 {/if}

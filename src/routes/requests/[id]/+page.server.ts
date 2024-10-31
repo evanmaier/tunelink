@@ -12,11 +12,12 @@ export const load: PageServerLoad = async ({ params }) => {
 		.get();
 
 	return {
-		imageURL: instrumentDoc.get('imageURL') as string,
+		imageURL: instrumentDoc.get('imageURL'),
 		price: instrumentDoc.get('price'),
-		name: instrumentDoc.get('name') as string,
+		name: instrumentDoc.get('name'),
 		dates: requestDoc.get('Dates'),
-		status: requestDoc.get('status') as string,
-		ownerID: requestDoc.get('ownerID') as string
+		status: requestDoc.get('status'),
+		ownerID: requestDoc.get('ownerID'),
+		instrumentID: requestDoc.get('instrumentID')
 	};
 };

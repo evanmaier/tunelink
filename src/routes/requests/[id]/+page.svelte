@@ -35,6 +35,8 @@
 
 	const requestRef = doc(db, 'requests', $page.params.id);
 
+	const instrumentRef = doc(db, 'instruments', data?.instrumentID);
+
 	onMount(() => {
 		const messagesUnsubscribe = onSnapshot(q, (querySnapshot) => {
 			messages.set(querySnapshot.docs.map((doc) => doc.data() as Message));
@@ -62,12 +64,22 @@
 		newMessage = '';
 	}
 
-	async function acceptRequest() {
+	async function accept() {
 		await updateDoc(requestRef, { status: 'accepted' });
 	}
 
-	async function rejectRequest() {
+	async function decline() {
 		await updateDoc(requestRef, { status: 'declined' });
+	}
+
+	async function activate() {
+		await updateDoc(requestRef, { status: 'active' });
+		await updateDoc(instrumentRef, { available: false });
+	}
+
+	async function complete() {
+		await updateDoc(requestRef, { status: 'complete' });
+		await updateDoc(instrumentRef, { available: true });
 	}
 
 	afterUpdate(() => {
@@ -104,8 +116,16 @@
 				</div>
 
 				{#if data.ownerID == $user?.uid}
-					<button on:click={acceptRequest} class="btn btn-success"> Accept </button>
-					<button on:click={rejectRequest} class="btn btn-error"> Reject </button>
+					{#if status == 'pending'}
+						<button on:click={accept} class="btn btn-success"> Accept </button>
+						<button on:click={decline} class="btn btn-error"> Reject </button>
+					{/if}
+					{#if status == 'accepted'}
+						<button on:click={activate} class="btn btn-success"> Activate </button>
+					{/if}
+					{#if status == 'active'}
+						<button on:click={complete} class="btn btn-success"> Complete </button>
+					{/if}
 				{/if}
 			</div>
 		</div>
@@ -142,7 +162,7 @@
 				{/each}
 			</div>
 
-			{#if status != 'declined'}
+			{#if ['pending', 'accepted', 'active'].includes(status)}
 				<div class="flex gap-4 items-center">
 					<input
 						type="text"

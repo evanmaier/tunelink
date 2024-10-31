@@ -39,6 +39,6 @@ export const load: PageServerLoad = async ({ locals }) => {
 		accepted: requestData.filter((data) => data.status == 'accepted'),
 		declined: requestData.filter((data) => data.status == 'declined'),
 		active: requestData.filter((data) => data.status == 'active'),
-		complete: requestData.filter((data) => data.status == 'complete'),
+		complete: requestData.filter((data) => data.status == 'complete')
 	};
 };

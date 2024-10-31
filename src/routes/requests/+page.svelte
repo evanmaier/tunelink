@@ -47,7 +47,7 @@
 						{/each}
 					{/if}
 				</div>
-		
+
 				<div class="flex flex-col gap-5 shadow-md rounded-lg p-2 w-full h-1/2 overflow-y-auto">
 					<h3 class="text-xl font-semibold text-center">Declined</h3>
 					{#if data.declined}
