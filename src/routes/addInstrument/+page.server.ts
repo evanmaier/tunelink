@@ -24,8 +24,6 @@ export const actions: Actions = {
 			price: parseInt(data.get('price') as string)
 		};
 
-		console.log(instrument);
-
 		try {
 			await adminDB.collection('instruments').add(instrument);
 		} catch (error: any) {
