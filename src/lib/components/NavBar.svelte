@@ -21,6 +21,12 @@
 		<li>
 			<a href="/" class="btn btn-ghost">Home</a>
 		</li>
+		<li>
+			<a href="/about" class="btn btn-ghost">About</a>
+		</li>
+		<li>
+			<a href="/feedback" class="btn btn-ghost">Feedback</a>
+		</li>
 		{#if $user}
 			<li>
 				<a href="/profile" class="btn btn-ghost">Profile</a>

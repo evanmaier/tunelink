@@ -1,4 +1,3 @@
-import { FieldValue } from 'firebase-admin/firestore';
 import type { Actions } from './$types';
 import { adminDB } from '$lib/server/admin';
 import { fail } from '@sveltejs/kit';
