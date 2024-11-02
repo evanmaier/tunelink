@@ -14,11 +14,11 @@
 			required
 		/>
 		<button class="btn btn-primary">Submit</button>
-        {#if form?.success}
-		<p class=" text-green-800 text-lg">Feedback Submitted</p>
-        {/if}
-        {#if form?.error}
-            <p class="text-red-800 text-lg">Error: {form.error}</p>
-        {/if}
+		{#if form?.success}
+			<p class=" text-green-800 text-lg">Feedback Submitted</p>
+		{/if}
+		{#if form?.error}
+			<p class="text-red-800 text-lg">Error: {form.error}</p>
+		{/if}
 	</form>
 </div>

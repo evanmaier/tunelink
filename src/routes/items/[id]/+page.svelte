@@ -75,10 +75,14 @@
 							<h3 class="text-xl font-bold">Instrument Not Available</h3>
 						{:else if data.existingRequest}
 							<h3 class="text-xl font-bold">Existing Request Is Active</h3>
-						{:else}
+						{:else if $user}
 							<button
 								class="btn btn-primary w-full"
 								on:click={() => goto(`/requests/new/${$page.params.id}`)}>Request Rental</button
+							>
+						{:else}
+							<button class="btn btn-primary" on:click={() => goto('/login')}
+								>Sign in to request rental</button
 							>
 						{/if}
 					</div>
