@@ -2,6 +2,7 @@
 	import { latitude, longitude } from '$lib/stores/GeoStore';
 	import { onMount } from 'svelte';
 	import Search from '$lib/components/Search.svelte';
+	import logo from '$lib/assets/tunelink-high-resolution-logo-transparent.svg';
 
 	onMount(async () => {
 		try {
@@ -16,5 +17,8 @@
 </script>
 
 <div class=" flex flex-col justify-center items-center p-10">
+	<div>
+		<img src={logo} alt="logo" class="h-20 mb-10 object-cover">
+	</div>
 	<Search />
 </div>
