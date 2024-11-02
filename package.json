@@ -48,6 +48,7 @@
 		"@algolia/ingestion": "^1.4.1",
 		"@algolia/monitoring": "^1.4.1",
 		"@algolia/recommend": "^5.4.1",
+		"@sveltejs/adapter-vercel": "^5.4.6",
 		"algoliasearch": "^4.24.0",
 		"firebase": "^10.13.0",
 		"firebase-admin": "^12.4.0",
