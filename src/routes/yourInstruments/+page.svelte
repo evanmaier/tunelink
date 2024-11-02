@@ -25,7 +25,9 @@
 			<div class="flex flex-col w-96 p-4">
 				<h3 class="text-bold text-xl text-center p-4">{i.name}</h3>
 				<img src={i.imageURL} alt="instrument" class="max-w-full max-h-[400px] object-cover" />
-				<button on:click={() => goto(`yourInstruments/edit/${i.id}`)} class="btn btn-primary mt-2">Edit</button>
+				<button on:click={() => goto(`yourInstruments/edit/${i.id}`)} class="btn btn-primary mt-2"
+					>Edit</button
+				>
 				<button on:click={() => deleteInstrument(i.id)} class="btn btn-error mt-2">Delete</button>
 			</div>
 		{/each}

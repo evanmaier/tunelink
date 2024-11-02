@@ -43,5 +43,5 @@
 			</li>
 		{/if}
 	</ul>
-	<img src={logo} alt="logo" class="h-8 object-cover mr-4">
+	<img src={logo} alt="logo" class="h-8 object-cover mr-4" />
 </nav>

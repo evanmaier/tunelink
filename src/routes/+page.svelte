@@ -18,7 +18,7 @@
 
 <div class=" flex flex-col justify-center items-center p-10">
 	<div>
-		<img src={logo} alt="logo" class="h-20 mb-10 object-cover">
+		<img src={logo} alt="logo" class="h-20 mb-10 object-cover" />
 	</div>
 	<Search />
 </div>
