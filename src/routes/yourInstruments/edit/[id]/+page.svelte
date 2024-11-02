@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import { onMount } from 'svelte';
-	import { doc, DocumentReference, getDoc, type DocumentData } from 'firebase/firestore';
+	import { doc, getDoc, type DocumentData } from 'firebase/firestore';
 	import { db } from '$lib/firebase';
 	import type { ActionData } from './$types';
 	import AuthCheck from '$lib/components/AuthCheck.svelte';
