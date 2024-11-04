@@ -61,8 +61,8 @@
 	}
 </script>
 
-<div class="flex space-x-10 items-end justify-center mt-10">
-	<div class="w-full max-w-sm text-center">
+<div class="flex flex-col mx-10">
+	<div class="w-full max-w-sm mb-10">
 		<form method="POST" action="?/login" use:enhance class="flex flex-col">
 			{#if $message}<span>{$message}</span>{/if}
 			<div class="label">
@@ -94,7 +94,7 @@
 		</form>
 	</div>
 
-	<div class="w-full max-w-sm text-center">
+	<div class="w-full max-w-sm">
 		<form method="POST" action="?/register" use:registerEnhance class="flex flex-col">
 			{#if $registerMessage}<span>{$registerMessage}</span>{/if}
 			<div class="label">

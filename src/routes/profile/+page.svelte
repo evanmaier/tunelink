@@ -9,11 +9,12 @@
 </script>
 
 <AuthCheck>
-	<h2 class="text-2xl font-bold text-center m-10">Profile</h2>
 	<div class="flex flex-col items-center">
+		<h2 class="text-2xl font-bold m-4">Profile</h2>
+
 		<form action="?/username" method="post" class="flex flex-col p-2 space-y-2" use:enhance>
 			<label for="current">Current Username</label>
-			<p id="current" class="text-md font-semibold">{username}</p>
+			<p id="current" class="text-lg font-semibold">{username}</p>
 			<label for="username">New Username</label>
 			<input type="text" name="username" class="input input-bordered w-full max-w-sm" required />
 			<button class="btn btn-primary">Update Username</button>
