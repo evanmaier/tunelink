@@ -55,7 +55,7 @@
 	}
 </script>
 
-<div class="mb-4 w-full">
+<div class="p-4 w-full max-w-xl">
 	<input
 		type="text"
 		name="search"
@@ -66,7 +66,7 @@
 	/>
 </div>
 
-<div class="grid grid-cols-1 gap-2 max-w-xs">
+<div class="flex flex-col w-full max-w-xl">
 	{#each searchHits as hit}
 		<button
 			on:click={() => goto(`/items/${hit.objectID}`)}
@@ -80,9 +80,9 @@
 	{/each}
 </div>
 
-<h2 class="text-2xl font-bold text-center">Local Instruments</h2>
+<h2 class="text-2xl font-bold text-center p-2">Local Instruments</h2>
 
-<div class="flex flex-col items-center w-full">
+<div class="flex flex-col items-center w-full max-w-sm">
 	<label for="radius" class="label-text p-2">Radius (km)</label>
 	<input
 		type="range"
@@ -103,15 +103,17 @@
 	</div>
 </div>
 
-<div class="grid grid-flow-row auto-rows-max md:grid-flow-col md:auto-cols-max gap-2">
+<div
+	class="grid gap-2 grid-cols-1 md:grid-cols-{Math.min(2, localHits.length)} lg:grid-cols-{Math.min(
+		3,
+		localHits.length
+	)}"
+>
 	{#each localHits as hit}
-		<button
-			on:click={() => goto(`/items/${hit.objectID}`)}
-			class="rounded-lg p-2 shadow-md w-full text-left"
-		>
-			<div class="flex flex-col items-center">
+		<button on:click={() => goto(`/items/${hit.objectID}`)} class="rounded-lg p-2 shadow-md">
+			<div class="flex flex-col">
 				<h3 class="text-lg font-semibold">{hit.name}</h3>
-				<img src={hit.imageURL} alt="pic" class="aspect-square object-cover rounded-md mr-4" />
+				<img src={hit.imageURL} alt="pic" class="max-w-xs aspect-square object-cover rounded-md" />
 			</div>
 		</button>
 	{/each}

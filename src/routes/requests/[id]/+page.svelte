@@ -95,7 +95,7 @@
 			<div class="grid grid-rows-2 gap-4">
 				<div class="flex flex-grow gap-4">
 					<img src={data.imageURL} class="h-20 w-20 object-cover rounded-lg" alt="instrument" />
-					
+
 					{#if data.ownerID == $user?.uid}
 						<div class="flex flex-col">
 							<h3 class="text-lg font-semibold">Renter</h3>
@@ -107,14 +107,14 @@
 							<p>{data.ownerName}</p>
 						</div>
 					{/if}
-	
+
 					<div class="flex flex-col">
 						<h3 class="text-lg font-semibold">Dates</h3>
 						<p>Start: {data.dates.start}</p>
 						<p>End: {data.dates.end}</p>
 					</div>
 				</div>
-			
+
 				<div class="flex flex-grow gap-2">
 					<div class="flex flex-col">
 						<h3 class="text-lg font-semibold">Status</h3>
@@ -135,7 +135,6 @@
 						{/if}
 					{/if}
 				</div>
-				
 			</div>
 		</div>
 

@@ -10,7 +10,7 @@
 </script>
 
 <AuthCheck>
-	<div class="flex flex-col items-center">
+	<div class="flex flex-col items-center p-2">
 		<h2 class="text-2xl font-bold text-center p-2">Rental Request</h2>
 
 		<form method="post" use:enhance>

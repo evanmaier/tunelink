@@ -4,8 +4,8 @@
 	export let form: ActionData;
 </script>
 
-<div class="grid items-center max-w-2xl m-4">
-	<form method="post" class="flex flex-col gap-4 w-full" use:enhance>
+<div class="grid items-center mx-auto max-w-2xl p-4">
+	<form method="post" class="flex flex-col gap-4" use:enhance>
 		<h2 class="font-bold text-2xl text-center">Feedback</h2>
 		<textarea
 			name="content"

@@ -43,25 +43,24 @@
 							<label for="price" class="text-lg font-semibold">Price</label>
 							<p id="price">$ {data.instrument.price}</p>
 						</div>
-	
+
 						{#if data.ownerName}
 							<div class="flex flex-col">
 								<label for="owner" class="text-lg font-semibold">Owner</label>
 								<p id="owner">{data.ownerName}</p>
 							</div>
 						{/if}
-	
+
 						<div class="flex flex-col">
 							<label for="available" class="text-lg font-semibold">Available</label>
 							<p id="available">{data.instrument.available}</p>
 						</div>
-	
+
 						<div class="flex flex-col">
 							<label for="condition" class="text-lg font-semibold">Condition</label>
 							<p id="condition">{data.instrument.condition}</p>
 						</div>
 					</div>
-				
 
 					<div class="flex flex-col">
 						<label for="description" class="text-lg font-semibold">Description</label>
