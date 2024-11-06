@@ -1,4 +1,4 @@
-import { adminDB } from '$lib/server/admin';
+import { adminDB, adminAuth } from '$lib/server/admin';
 import type { PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ params }) => {
@@ -11,13 +11,16 @@ export const load: PageServerLoad = async ({ params }) => {
 		.doc(requestDoc.get('instrumentID'))
 		.get();
 
+	const renter = await adminAuth.getUser(requestDoc.get('renterID'));
+	const owner = await adminAuth.getUser(requestDoc.get('ownerID'));
+
 	return {
 		imageURL: instrumentDoc.get('imageURL'),
-		price: instrumentDoc.get('price'),
-		name: instrumentDoc.get('name'),
 		dates: requestDoc.get('Dates'),
 		status: requestDoc.get('status'),
 		ownerID: requestDoc.get('ownerID'),
-		instrumentID: requestDoc.get('instrumentID')
+		instrumentID: requestDoc.get('instrumentID'),
+		ownerName: owner.displayName,
+		renterName: renter.displayName
 	};
 };

@@ -26,39 +26,42 @@
 </script>
 
 {#if data.instrument}
-	<div class="flex flex-col justify-center gap-4 p-10">
-		<div class="flex flex-col items-center gap-6 p-8 max-w-3xl mx-auto">
-			<h2 class="text-2xl font-bold text-center p-2">{data.instrument.name}</h2>
+	<div class="flex flex-col p-2 h-[calc(100vh-4rem)]">
+		<div class="flex flex-col items-center">
+			<h2 class="text-2xl font-bold text-center">{data.instrument.name}</h2>
 
-			<div class="flex gap-6 max-w-2xl">
+			<div class="flex flex-col w-screen items-center">
 				<img
 					src={data.instrument.imageURL}
 					alt="instrument"
-					class=" max-w-sm object-contain rounded-lg"
+					class=" w-[95vw] aspect-square object-cover rounded-lg"
 				/>
 
-				<div class="flex flex-col gap-4">
-					<div class="flex flex-col">
-						<label for="price" class="text-lg font-semibold">Price</label>
-						<p id="price">$ {data.instrument.price}</p>
-					</div>
-
-					{#if data.ownerName}
+				<div class="grid grid-cols-1 grid-rows-2 gap-2 p-2">
+					<div class="flex justify-between items-center">
 						<div class="flex flex-col">
-							<label for="owner" class="text-lg font-semibold">Owner</label>
-							<p id="owner">{data.ownerName}</p>
+							<label for="price" class="text-lg font-semibold">Price</label>
+							<p id="price">$ {data.instrument.price}</p>
 						</div>
-					{/if}
-
-					<div class="flex flex-col">
-						<label for="available" class="text-lg font-semibold">Available</label>
-						<p id="available">{data.instrument.available}</p>
+	
+						{#if data.ownerName}
+							<div class="flex flex-col">
+								<label for="owner" class="text-lg font-semibold">Owner</label>
+								<p id="owner">{data.ownerName}</p>
+							</div>
+						{/if}
+	
+						<div class="flex flex-col">
+							<label for="available" class="text-lg font-semibold">Available</label>
+							<p id="available">{data.instrument.available}</p>
+						</div>
+	
+						<div class="flex flex-col">
+							<label for="condition" class="text-lg font-semibold">Condition</label>
+							<p id="condition">{data.instrument.condition}</p>
+						</div>
 					</div>
-
-					<div class="flex flex-col">
-						<label for="condition" class="text-lg font-semibold">Condition</label>
-						<p id="condition">{data.instrument.condition}</p>
-					</div>
+				
 
 					<div class="flex flex-col">
 						<label for="description" class="text-lg font-semibold">Description</label>
