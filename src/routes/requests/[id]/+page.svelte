@@ -91,9 +91,8 @@
 
 <AuthCheck>
 	<div class="flex flex-col p-4 items-center h-[calc(100vh-4rem)]">
-		<div class="flex flex-col items-center">
-			<div class="grid grid-rows-2 gap-4">
-				<div class="flex flex-grow gap-4">
+			<div class="grid grid-rows-2 sm:flex sm:space-x-4 p-2">
+				<div class="flex space-x-4">
 					<img src={data.imageURL} class="h-20 w-20 object-cover rounded-lg" alt="instrument" />
 
 					{#if data.ownerID == $user?.uid}
@@ -115,7 +114,7 @@
 					</div>
 				</div>
 
-				<div class="flex flex-grow gap-2">
+				<div class="flex flex-grow gap-4">
 					<div class="flex flex-col">
 						<h3 class="text-lg font-semibold">Status</h3>
 						<p>{status}</p>
@@ -135,8 +134,7 @@
 						{/if}
 					{/if}
 				</div>
-			</div>
-		</div>
+			</div>	
 
 		<div class="flex flex-col gap-4 max-w-2xl w-full grow overflow-hidden">
 			<div class="flex flex-col border border-gray-500 rounded-lg overflow-y-auto grow">

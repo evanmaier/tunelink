@@ -20,7 +20,7 @@
 
 <AuthCheck>
 	<h2 class="text-2xl font-bold text-center">Your Instruments</h2>
-	<div class="flex flex-col p-4 place-items-center md:grid md:grid-cols-2 xl:grid-cols-3">
+	<div class="p-4 place-items-center grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3">
 		{#each data.instruments as i}
 			<div class="flex flex-col w-96 p-4">
 				<h3 class="text-bold text-xl text-center p-4">{i.name}</h3>

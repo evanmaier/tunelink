@@ -7,7 +7,7 @@
 </script>
 
 <AuthCheck>
-	<h2 class="text-2xl font-bold text-center">Rentals</h2>
+	<h2 class="text-2xl font-bold text-center p-2">Rentals</h2>
 
 	<div class="h-[95vh] grid grid-cols-1 mx-auto md:grid-cols-2 lg:grid-cols-3">
 		<div class="flex flex-col gap-2 shadow-md rounded-lg p-2 overflow-y-auto">
