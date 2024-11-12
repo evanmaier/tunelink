@@ -36,8 +36,8 @@
 			Currently, this project is in alpha testing, the goal of which is to collect feedback and find
 			bugs. Once I feel like the product is ready, we will add a free tier and a paid tier. The plan
 			is to allow users/businesses to list a small number of instruments for free, and charge a
-			monthly fee for more listings. Our target customers are music stores with rental programs and
-			a small online presence, and local musicians with lots of gear.
+			monthly fee for more listings. My vision for TuneLink is to make music gear more accessible
+			in a sustainable way, without relying on advertising or invasive data collection.
 		</p>
 	</article>
 </div>
