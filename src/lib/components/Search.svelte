@@ -5,6 +5,7 @@
 	import algoliasearch from 'algoliasearch';
 	import type { SearchClient, SearchIndex } from 'algoliasearch';
 	import { goto } from '$app/navigation';
+	import { loginSchema } from './Schemas';
 
 	let client: SearchClient;
 	let index: SearchIndex;
@@ -67,17 +68,25 @@
 </div>
 
 <div class="flex flex-col w-full max-w-xl">
-	{#each searchHits as hit}
-		<button
-			on:click={() => goto(`/items/${hit.objectID}`)}
-			class="rounded-lg p-2 shadow-md w-full text-left"
-		>
-			<div class="flex items-center">
-				<img src={hit.imageURL} alt="pic" class="h-20 w-20 object-cover rounded-md mr-4" />
-				<p class="text-lg font-semibold">{hit.name}</p>
+	{#if query.length > 0}
+		{#if searchHits.length == 0}
+			<div class="flex rounded-lg p-2 shadow-md w-full items-center">
+				<p class="text-lg font-semibold mx-auto">No Search Results</p>
 			</div>
-		</button>
-	{/each}
+		{:else}
+			{#each searchHits as hit}
+				<button
+					on:click={() => goto(`/items/${hit.objectID}`)}
+					class="rounded-lg p-2 shadow-md w-full text-left"
+				>
+					<div class="flex items-center">
+						<img src={hit.imageURL} alt="pic" class="h-20 w-20 object-cover rounded-md mr-4" />
+						<p class="text-lg font-semibold">{hit.name}</p>
+					</div>
+				</button>
+			{/each}
+		{/if}
+	{/if}
 </div>
 
 <h2 class="text-2xl font-bold text-center p-2">Local Instruments</h2>

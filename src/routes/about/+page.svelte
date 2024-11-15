@@ -16,8 +16,8 @@
 		<p>
 			First, you can search by keyword or browse the local instruments selection to find what you
 			need. Next, you send a rental request by navigating to the item page, clicking the request
-			rental button, and submitting the form. To do this, you need to have an account set up with
-			a username, email, and password. Once the request is sent, you can track it's status on the
+			rental button, and submitting the form. To do this, you need to have an account set up with a
+			username, email, and password. Once the request is sent, you can track it's status on the
 			rentals page. You can also chat with the owner to arrange pickup and payment.
 		</p>
 		<h3>Lending</h3>
@@ -36,8 +36,8 @@
 			Currently, this project is in alpha testing, the goal of which is to collect feedback and find
 			bugs. Once I feel like the product is ready, we will add a free tier and a paid tier. The plan
 			is to allow users/businesses to list a small number of instruments for free, and charge a
-			monthly fee for more listings. My vision for TuneLink is to make music gear more accessible
-			in a sustainable way, without relying on advertising or invasive data collection.
+			monthly fee for more listings. My vision for TuneLink is to make music gear more accessible in
+			a sustainable way, without relying on advertising or invasive data collection.
 		</p>
 	</article>
 </div>

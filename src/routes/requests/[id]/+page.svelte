@@ -91,50 +91,50 @@
 
 <AuthCheck>
 	<div class="flex flex-col p-4 items-center h-[calc(100vh-4rem)]">
-			<div class="grid grid-rows-2 sm:flex sm:space-x-4 p-2">
-				<div class="flex space-x-4">
-					<img src={data.imageURL} class="h-20 w-20 object-cover rounded-lg" alt="instrument" />
+		<div class="grid grid-rows-2 sm:flex sm:space-x-4 p-2">
+			<div class="flex space-x-4">
+				<img src={data.imageURL} class="h-20 w-20 object-cover rounded-lg" alt="instrument" />
 
-					{#if data.ownerID == $user?.uid}
-						<div class="flex flex-col">
-							<h3 class="text-lg font-semibold">Renter</h3>
-							<p>{data.renterName}</p>
-						</div>
-					{:else}
-						<div class="flex flex-col">
-							<h3 class="text-lg font-semibold">Owner</h3>
-							<p>{data.ownerName}</p>
-						</div>
-					{/if}
-
+				{#if data.ownerID == $user?.uid}
 					<div class="flex flex-col">
-						<h3 class="text-lg font-semibold">Dates</h3>
-						<p>Start: {data.dates.start}</p>
-						<p>End: {data.dates.end}</p>
+						<h3 class="text-lg font-semibold">Renter</h3>
+						<p>{data.renterName}</p>
 					</div>
+				{:else}
+					<div class="flex flex-col">
+						<h3 class="text-lg font-semibold">Owner</h3>
+						<p>{data.ownerName}</p>
+					</div>
+				{/if}
+
+				<div class="flex flex-col">
+					<h3 class="text-lg font-semibold">Dates</h3>
+					<p>Start: {data.dates.start}</p>
+					<p>End: {data.dates.end}</p>
+				</div>
+			</div>
+
+			<div class="flex flex-grow gap-4">
+				<div class="flex flex-col">
+					<h3 class="text-lg font-semibold">Status</h3>
+					<p>{status}</p>
 				</div>
 
-				<div class="flex flex-grow gap-4">
-					<div class="flex flex-col">
-						<h3 class="text-lg font-semibold">Status</h3>
-						<p>{status}</p>
-					</div>
-
-					{#if data.ownerID == $user?.uid}
-						{#if status == 'pending'}
-							<button on:click={accept} class="btn btn-success"> Accept </button>
-							<button on:click={decline} class="btn btn-error"> Decline </button>
-						{/if}
-						{#if status == 'accepted'}
-							<button on:click={activate} class="btn btn-success"> Activate </button>
-							<button on:click={decline} class="btn btn-error"> Decline </button>
-						{/if}
-						{#if status == 'active'}
-							<button on:click={complete} class="btn btn-success"> Complete </button>
-						{/if}
+				{#if data.ownerID == $user?.uid}
+					{#if status == 'pending'}
+						<button on:click={accept} class="btn btn-success"> Accept </button>
+						<button on:click={decline} class="btn btn-error"> Decline </button>
 					{/if}
-				</div>
-			</div>	
+					{#if status == 'accepted'}
+						<button on:click={activate} class="btn btn-success"> Activate </button>
+						<button on:click={decline} class="btn btn-error"> Decline </button>
+					{/if}
+					{#if status == 'active'}
+						<button on:click={complete} class="btn btn-success"> Complete </button>
+					{/if}
+				{/if}
+			</div>
+		</div>
 
 		<div class="flex flex-col gap-4 max-w-2xl w-full grow overflow-hidden">
 			<div class="flex flex-col border border-gray-500 rounded-lg overflow-y-auto grow">
