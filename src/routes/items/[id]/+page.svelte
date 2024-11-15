@@ -22,6 +22,8 @@
 
 		const res = await response.json();
 		location = res.features[0].place_name;
+
+		console.log(data);
 	});
 </script>
 
@@ -34,7 +36,7 @@
 				<img
 					src={data.instrument.imageURL}
 					alt="instrument"
-					class=" w-[95vw] aspect-square object-cover rounded-lg"
+					class="w-full max-w-sm aspect-square object-cover rounded-lg"
 				/>
 
 				<div class="grid grid-cols-1 grid-rows-2 gap-2 p-2">
@@ -83,7 +85,7 @@
 								on:click={() => goto(`/requests/new/${$page.params.id}`)}>Request Rental</button
 							>
 						{:else}
-							<button class="btn btn-primary" on:click={() => goto('/login')}
+							<button class="btn btn-primary w-full" on:click={() => goto('/login')}
 								>Sign in to request rental</button
 							>
 						{/if}

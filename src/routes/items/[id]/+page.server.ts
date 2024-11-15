@@ -2,7 +2,11 @@ import { adminAuth, adminDB } from '$lib/server/admin';
 import type { PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ locals, params }) => {
-	const sent = await adminDB.collection('requests').where('renterID', '==', locals.userID).get();
+	let existingRequest = false;
+	if (locals.userID) {
+		const sent = await adminDB.collection('requests').where('renterID', '==', locals.userID).get();
+		existingRequest = !sent.empty;
+	}
 
 	const docSnap = await adminDB.collection('instruments').doc(params.id).get();
 	const docData = docSnap.data();
@@ -11,7 +15,7 @@ export const load: PageServerLoad = async ({ locals, params }) => {
 
 	return {
 		instrument: docData,
-		existingRequest: !sent.empty,
+		existingRequest,
 		ownerName: owner.displayName
 	};
 };
