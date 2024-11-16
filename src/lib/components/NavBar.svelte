@@ -18,8 +18,8 @@
 
 <div class="navbar bg-base-100">
 	<div class="justify-start w-1/3">
-		<div class="dropdown">
-			<div tabindex="0" role="button" class="btn btn-ghost btn-circle">
+		<details class="dropdown">
+			<summary class="btn btn-ghost btn-circle list-none [&::-webkit-details-marker]:hidden">
 				<svg
 					xmlns="http://www.w3.org/2000/svg"
 					class="h-5 w-5"
@@ -34,8 +34,8 @@
 						d="M4 6h16M4 12h16M4 18h7"
 					/>
 				</svg>
-			</div>
-			<ul class="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow">
+			</summary>
+			<ul class="menu menu-sm bg-base-100 rounded-box z-50 mt-3 w-52 p-2 shadow absolute left-0 top-full">
 				<li>
 					<a href="/about" class="btn btn-ghost">About</a>
 				</li>
@@ -56,15 +56,15 @@
 						<a href="/requests" class="btn btn-ghost">Rentals</a>
 					</li>
 					<li>
-						<button on:click={logOut} class="btn btn-primary text-white">Sign Out</button>
+						<button on:click={logOut} class="btn btn-primary text-white w-full">Sign Out</button>
 					</li>
 				{:else}
 					<li>
-						<a href="/login" class="btn btn-primary text-white">Sign In</a>
+						<a href="/login" class="btn btn-primary text-white w-full">Sign In</a>
 					</li>
 				{/if}
 			</ul>
-		</div>
+		</details>
 	</div>
 	<div class="justify-center w-1/3">
 		<a href="/" class="btn btn-ghost text-xl">
