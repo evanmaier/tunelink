@@ -35,7 +35,11 @@
 					/>
 				</svg>
 			</div>
-			<ul class="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow">
+			<ul
+				tabindex="0"
+				role="menu"
+				class="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow"
+			>
 				<li>
 					<a href="/about" class="btn btn-ghost">About</a>
 				</li>
